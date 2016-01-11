@@ -1,0 +1,240 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(中华人民共和国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\注册启动项.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.chs\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\注册启动项.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG  0, 0, 235, 55
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 注册启动项"
+FONT 9, "宋体"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "注册启动项 1.0 版",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "版权所有 (C) 2012",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "确定",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_MY_DIALOG DIALOGEX 0, 0, 320, 200
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "注册启动项"
+FONT 9, "宋体", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,260,7,50,14
+    PUSHBUTTON      "取消",IDCANCEL,260,23,50,14
+    LTEXT           "TODO: 在这里设置对话控制。",IDC_STATIC,50,90,200,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404B0"
+        BEGIN
+            VALUE "FileDescription", "注册启动项 Microsoft 基础类应用程序"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "注册启动项"
+            VALUE "LegalCopyright", "版权所有 (C) 2012"
+            VALUE "OriginalFilename", "注册启动项.EXE"
+            VALUE "ProductName", "注册启动项 应用程序"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_MY_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+IDR_MANIFEST RT_MANIFEST 
+BEGIN
+    0xbbef, 0x3cbf, 0x783f, 0x6c6d, 0x7620, 0x7265, 0x6973, 0x6e6f, 0x223d, 
+    0x2e31, 0x2230, 0x6520, 0x636e, 0x646f, 0x6e69, 0x3d67, 0x5522, 0x4654, 
+    0x382d, 0x2022, 0x7473, 0x6e61, 0x6164, 0x6f6c, 0x656e, 0x223d, 0x6579, 
+    0x2273, 0x3e3f, 0x0a0d, 0x613c, 0x7373, 0x6d65, 0x6c62, 0x2079, 0x6d78, 
+    0x6e6c, 0x3d73, 0x7522, 0x6e72, 0x733a, 0x6863, 0x6d65, 0x7361, 0x6d2d, 
+    0x6369, 0x6f72, 0x6f73, 0x7466, 0x632d, 0x6d6f, 0x613a, 0x6d73, 0x762e, 
+    0x2231, 0x6d20, 0x6e61, 0x6669, 0x7365, 0x5674, 0x7265, 0x6973, 0x6e6f, 
+    0x223d, 0x2e31, 0x2230, 0x0d3e, 0x3c0a, 0x7361, 0x6573, 0x626d, 0x796c, 
+    0x6449, 0x6e65, 0x6974, 0x7974, 0x0a0d, 0x2020, 0x2020, 0x6576, 0x7372, 
+    0x6f69, 0x3d6e, 0x3122, 0x302e, 0x302e, 0x302e, 0x0d22, 0x200a, 0x2020, 
+    0x7020, 0x6f72, 0x6563, 0x7373, 0x726f, 0x7241, 0x6863, 0x7469, 0x6365, 
+    0x7574, 0x6572, 0x223d, 0x3858, 0x2236, 0x0a0d, 0x2020, 0x2020, 0x616e, 
+    0x656d, 0x223d, 0xb3e6, 0xe5a8, 0x8c86, 0x90e5, 0xe5af, 0xa88a, 0xa1e9, 
+    0x2eb9, 0x7865, 0x2e65, 0x616d, 0x696e, 0x6566, 0x7473, 0x0d22, 0x200a, 
+    0x2020, 0x7420, 0x7079, 0x3d65, 0x7722, 0x6e69, 0x3233, 0x0d22, 0x2f0a, 
+    0x0d3e, 0x3c0a, 0x7274, 0x7375, 0x4974, 0x666e, 0x206f, 0x6d78, 0x6e6c, 
+    0x3d73, 0x7522, 0x6e72, 0x733a, 0x6863, 0x6d65, 0x7361, 0x6d2d, 0x6369, 
+    0x6f72, 0x6f73, 0x7466, 0x632d, 0x6d6f, 0x613a, 0x6d73, 0x762e, 0x2233, 
+    0x0d3e, 0x200a, 0x2020, 0x3c20, 0x6573, 0x7563, 0x6972, 0x7974, 0x0d3e, 
+    0x200a, 0x2020, 0x2020, 0x2020, 0x3c20, 0x6572, 0x7571, 0x7365, 0x6574, 
+    0x5064, 0x6972, 0x6976, 0x656c, 0x6567, 0x3e73, 0x0a0d, 0x2020, 0x2020, 
+    0x2020, 0x2020, 0x2020, 0x2020, 0x723c, 0x7165, 0x6575, 0x7473, 0x6465, 
+    0x7845, 0x6365, 0x7475, 0x6f69, 0x4c6e, 0x7665, 0x6c65, 0x6c20, 0x7665, 
+    0x6c65, 0x223d, 0x6572, 0x7571, 0x7269, 0x4165, 0x6d64, 0x6e69, 0x7369, 
+    0x7274, 0x7461, 0x726f, 0x2022, 0x6975, 0x6341, 0x6563, 0x7373, 0x223d, 
+    0x6166, 0x736c, 0x2265, 0x3e2f, 0x0a0d, 0x2020, 0x2020, 0x2020, 0x2020, 
+    0x2f3c, 0x6572, 0x7571, 0x7365, 0x6574, 0x5064, 0x6972, 0x6976, 0x656c, 
+    0x6567, 0x3e73, 0x0a0d, 0x2020, 0x2020, 0x2f3c, 0x6573, 0x7563, 0x6972, 
+    0x7974, 0x0d3e, 0x3c0a, 0x742f, 0x7572, 0x7473, 0x6e49, 0x6f66, 0x0d3e, 
+    0x3c0a, 0x612f, 0x7373, 0x6d65, 0x6c62, 0x3e79
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于 注册启动项(&A)..."
+END
+
+#endif    // 中文(中华人民共和国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE 4, 2
+#pragma code_page(936)
+#endif //_WIN32
+#include "res\注册启动项.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.chs\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
