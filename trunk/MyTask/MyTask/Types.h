@@ -82,6 +82,18 @@ typedef unsigned char  UINT8;
 	i += tmpLen; \
 }
 
+#define SET_STRING(a, b) {\
+    if ((b) != NULL) \
+    { \
+      memccpy((a), (b), '\0', sizeof(a));\
+      (a)[sizeof(a)-1] = '\0';\
+    }\
+    else\
+    {\
+      memset((a), 0, sizeof(a));\
+    }\
+}
+
 #define SAFE_DELETE(p) \
     if ((p) != NULL) \
     {\
@@ -115,6 +127,7 @@ bool CheckMsgTypeTiming(int type_);
 bool CheckMsgTypeRepeat(int type_);
 bool CheckMsgTypeRemind(int type_);
 bool CheckMsgTypeRunCmd(int type_);
+time_t GetTimeFromString(const char* stTime);
 
 enum TypeMsgDlgType
 {
@@ -187,6 +200,18 @@ enum RMD_TIME_TYPE
 	RMD_30_MIN,
 	RMD_1_HOUR,
 	RMD_USER_DEFINE
+};
+
+/**
+*	@brief	
+*	  日期选择框的特殊选项
+*/
+enum tagSelectIndex
+{
+    SI_ALL = 0,         // 所有任务
+    SI_TODAY,           // 今日任务
+    SI_NON_FINISHED,    // 未完成任务
+    DEFAULT_SELECT_DATE // 普通日期开始
 };
 
 typedef struct tagFileHead
@@ -353,6 +378,7 @@ typedef struct tagTaskMsg
     void CopyFrom32( const TaskMsgTime32& task32 );
     time_t GetNextTipDay();
     bool IsBeforeSetMinute( const CTime& _tiNow );
+    void SetValue( CString &stFieldName, const char* stValue );
 }TaskMsg,*PTaskMsg;
 
 int CmpTskByTitleAsc(const void*p1, const void*p2);
@@ -503,6 +529,6 @@ CString GetDate(time_t ti);
 time_t GetDateInt(time_t ti);
 LPCTSTR GetNormalTaskDataByCol( CString& sBuf, const TaskMsg& tsk, int iCol );
 LPCTSTR GetDefaultTaskDataByCol( CString& sBuf, const TaskMsg& tsk, int iCol );
-
+void GetRmdTypeFromString(TaskMsg& tsk, const char* st);
 #pragma pack(pop)
-#endif // !defined(AFX_TYPES_H__17436_8344_8645_7890_F1455117262D__INCLUDED_)
+#endif // !defined(AFX_TYPES_H__17436_8344_8645_7890_F1455117262D__INCLUDED_) 

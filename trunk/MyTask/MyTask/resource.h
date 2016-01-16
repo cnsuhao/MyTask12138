@@ -40,6 +40,7 @@
 #define IDD_DIALOG_DF_TASK_EDIT         188
 #define IDD_DIALOG_TASKS_MGR            190
 #define IDD_DIALOG_VERSION_SHOW         191
+#define IDD_DIALOG_TIMEOUT_TASK         192
 #define IDC_LIST_TASK_SHOW              1000
 #define IDC_STATIC_STATUS               1001
 #define IDC_LIST_TASK_SHOW2             1002
@@ -134,6 +135,8 @@
 #define ID_OK_EDIT_DF                   1075
 #define ID_EDIT_DF_ADD                  1076
 #define IDC_RADIO_DAY                   1076
+#define ID_OK_EDIT_DF2                  1076
+#define ID_OK_KNOWN                     1076
 #define ID_EDIT_DF_DEL                  1077
 #define IDC_RADIO_WEEK                  1077
 #define ID_EDIT_DF_MODIFY               1078
@@ -160,6 +163,7 @@
 #define IDC_LIST1                       1096
 #define IDC_LIST_VERSION                1096
 #define IDC_COMBO_VER_LIST              1098
+#define IDC_LIST_TIMEOUT_TASK           1099
 #define ID_MENU_OPEN                    32772
 #define ID_BTN_TOOL_ADD                 32773
 #define ID_BTN_TOOL_SAVE                32774
@@ -226,9 +230,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        192
+#define _APS_NEXT_RESOURCE_VALUE        193
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1099
+#define _APS_NEXT_CONTROL_VALUE         1100
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

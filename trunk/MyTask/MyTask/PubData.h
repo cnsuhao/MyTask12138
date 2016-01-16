@@ -14,6 +14,7 @@
 #include "MyTaskArray.h"
 
 class CDialog;
+class TiXmlNode;
 
 #define FILE_NAME_SET "userconfig.cfg"
 #define FILE_NAME_DF_TASK "default.dat"
@@ -21,9 +22,9 @@ class CDialog;
 int MessageBox( LPCSTR lpText, LPCSTR lpCaption="", UINT nSeconds=10, BOOL bDefaultOnOK=TRUE);
 bool CheckDate( const char* stDay, time_t * ptiDate = NULL);
 bool GetExportFileName(TagFileType type_, CString& stFileName, CString& stErrMsg, CDialog* pDlg = NULL);
+bool GetImportFileName(TagFileType type_, CString& stFileName, CString& stErrMsg, CDialog* pDlg = NULL);
 
 bool _CheckDate( struct tm & tmDay, const char* stDay);
-
 struct LockCounter
 {
     int nLockSuccess;
@@ -59,7 +60,10 @@ public:
 	static CString GetLogFileName( const char*stName );
 	static CString GetPureName( const CString& m_stLogViewer, BOOL bIsExt = FALSE );
 	static CString GetPureModuleName();
-	static CSetMsg setMsg;
+    static bool ParseXmlDataNodeAsDefaultTask(TiXmlNode* pNode);
+    static TaskMsg gTask;
+    static CString stFieldName;
+    static CSetMsg setMsg;
 	static HANDLE metuxHandle;
 	static CSingleLock * pRmdLock;
     static LockCounter oLockCounter;

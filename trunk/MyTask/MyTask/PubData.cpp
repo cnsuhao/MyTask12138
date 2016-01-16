@@ -9,6 +9,8 @@
 #include "MyMessageDlg.h"
 #include "MyLog.h"
 #include <shlwapi.h>
+#include "tinyxml/tinyxml.h"
+#include <string>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -27,6 +29,8 @@ CSemaphore* CPubData::psemObjRemind = NULL;
 CSingleLock * CPubData::pRmdLock = NULL;
 MyTaskArray CPubData::gArrDfTasks;
 LockCounter CPubData::oLockCounter;
+TaskMsg CPubData::gTask;
+CString CPubData::stFieldName;
 const char * CPubData::gstListTitles[] =
 {
     "全选",
@@ -63,7 +67,7 @@ const char* CPubData::gstWeekDayName[]={
     "日","一","二","三","四","五","六"
 };
 
-const int CPubData::gnVersionModifySize = 30;
+const int CPubData::gnVersionModifySize = 33;
 const char * CPubData::gstVersionModifyString[] = {
     "★v1.4 基本功能",
     "    ① ★任务的添加，删除和修改",
@@ -92,9 +96,12 @@ const char * CPubData::gstVersionModifyString[] = {
     "    ⑤ ★任务xml格式导出(2015-11-13)",
     "    ⑥ ★日常任务xml格式导出(2015-11-17)",
     "    ⑦ ★版本信息展示(2015-11-20)", 
-    "    ⑧ ★过期提醒统一处理(计划)",
-    "    ⑨ ★日常任务xml格式导入(计划中)", // 29
-    "" // 30
+    "    ⑧ ★过期提醒统一处理(2016-01-16)",
+    "    ⑨ ★日常任务xml格式导入(2016-01-16)", // 29
+    "", // 30
+    "★v1.8 新增功能：", 
+    "    ① ★根据屏幕分辨率修改按钮位置和大小(计划中)",
+    "" // 33
 };
 
 CPubData::CPubData()
@@ -430,5 +437,107 @@ bool GetExportFileName( TagFileType type_, CString& stFileName, CString& stErrMs
     }
 
     stFileName = cStrFile;
+    return true;
+}
+
+bool GetImportFileName( TagFileType type_, CString& stFileName, CString& stErrMsg, CDialog* pDlg /*= NULL*/)
+{
+    CFileDialog* pFileDialog = NULL;
+    switch(type_)
+    {
+    case FT_XML:
+        pFileDialog = new CFileDialog(TRUE,
+            _T("xml"),
+            NULL,
+            OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, 
+            _T("xml文件(*.xml)|*.xml|所有文件(*.*)|*.*|"),
+            pDlg);
+        break;
+    case FT_EXCEL:
+        pFileDialog = new CFileDialog(TRUE,
+            _T("xls"),
+            NULL,
+            OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, 
+            _T("Microsoft Excel(*.xls)|*.xls|"),
+            pDlg);   
+        break;
+    default:
+        break;
+    }
+    if (NULL == pFileDialog)
+    {
+        stErrMsg = "创建内存失败!";
+        return false;
+    }
+    if(pFileDialog->DoModal() != IDOK)   
+    {
+        stErrMsg = "未选择导入文件!";
+        return false;   
+    }
+    CString cStrFile=pFileDialog->GetPathName();  // 选择打开的文件   
+
+    stFileName = cStrFile;
+    return true;
+}
+
+bool CPubData::ParseXmlDataNodeAsDefaultTask(TiXmlNode* pNode)
+{
+    CString st;
+    switch (pNode->Type())
+    {
+    case TiXmlNode::TINYXML_DECLARATION:
+        // 略过
+        pNode = pNode->NextSibling();
+        break;
+    case TiXmlNode::TINYXML_COMMENT:
+        // 略过
+        break;
+    case TiXmlNode::TINYXML_ELEMENT:
+        {
+            bool bIsTask = false;
+            TiXmlElement* pEle = NULL;
+            TiXmlNode * pSubNode = NULL;
+            pEle = pNode->ToElement();
+            if (pEle->Value() == std::string("Tasks"))
+            {
+                ADD_TRACE("Tasks Type=[%s] Count=%s", 
+                    pEle->Attribute("type"),
+                    pEle->Attribute("num"));
+            }
+            else if(pEle->Value() == std::string("Task"))
+            {
+                memset(&gTask, 0, sizeof(gTask));
+                gTask.nMsgType = MT_TIMING;
+                bIsTask = true;
+            }
+            else
+            {
+                stFieldName = pEle->Value();
+            }
+            pSubNode = pNode->IterateChildren(NULL);
+            while(pSubNode != NULL)
+            {
+                if (!ParseXmlDataNodeAsDefaultTask(pSubNode))
+                {
+                    return false;
+                }
+                pSubNode = pNode->IterateChildren(pSubNode);
+            }
+
+            if (bIsTask)
+            {
+                gArrDfTasks.AddTask(gTask);
+            }
+        }
+        break;
+
+    case TiXmlNode::TINYXML_TEXT:
+        {
+            TiXmlText* pText = pNode->ToText();
+
+            gTask.SetValue(stFieldName, pText->Value());
+        }
+        break;
+    }
     return true;
 }

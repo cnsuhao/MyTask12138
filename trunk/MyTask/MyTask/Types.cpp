@@ -321,6 +321,49 @@ bool tagTaskMsg::IsBeforeSetMinute( const CTime& tiNow )
     }
 }
 
+void tagTaskMsg::SetValue( CString &stFieldName, const char* stValue )
+{
+    if (stFieldName == "标题")
+    {
+        SET_STRING(stTitle, stValue);
+    }
+    else if(stFieldName == "起始时间")
+    {
+        tiStartSet = GetTimeFromString(stValue);
+    }
+    else if(stFieldName == "下一次时间")
+    {
+        tiNextRmd = GetTimeFromString(stValue);
+    }
+    else if(stFieldName == "循环方式")
+    {
+        tipNext.rt.nTypeTime = (short)atoi(stValue);
+    }
+    else if(stFieldName == "提醒时间")
+    {
+        // Do Nothing
+    }
+    else if(stFieldName == "详细信息")
+    {
+        SET_STRING(stDetails, stValue);
+    }
+    else if(stFieldName == "提醒")
+    {
+        if (atoi(stValue) == 1)
+        {
+            nMsgType |= MT_RMD;
+        }
+    }
+    else if(stFieldName == "执行命令")
+    {
+        if (strlen(stValue) > 0)
+        {
+            nMsgType |= MT_CMD;
+            SET_STRING(stCmd, stValue);
+        }
+    }
+}
+
 bool CSetMsg::SetDefaultFileName( CPCHAR stname )
 {
 	memcpy(m_stFileName, stname, MAX_FILE_NAME);
@@ -882,4 +925,52 @@ LPCTSTR GetDefaultTaskDataByCol( CString& sBuf, const TaskMsg& tsk, int iCol )
     }
 
     return sBuf;
+}
+
+time_t GetTimeFromString( const char* stTime )
+{
+    struct tm ti;
+
+    if (sscanf(stTime, "%d-%d-%d %d:%d", &ti.tm_year, 
+        &ti.tm_mon, &ti.tm_mday, &ti.tm_hour, &ti.tm_min) == 5)
+    {
+        ti.tm_year -= 1900;
+        ti.tm_mon -= 1;
+        return mktime(&ti);
+    }
+    return 0;
+}
+
+short GetWeekFromString( const char* st ) 
+{
+    for (int i=0; i<7; ++i)
+    {
+        if (strcmp(st, CPubData::gstWeekDayName[i]) == 0)
+        {
+            return i + 1;
+        }
+    }
+}
+
+void GetRmdTypeFromString(TaskMsg& tsk, const char* st)
+{
+    for (int i=0; i<RMD_TT_MAX; ++i)
+    {
+        if (strncmp(st, CPubData::gstRmdTimeTypeName[i], 4) == 0)
+        {
+            tsk.tipNext.rt.nTypeTime = i;
+            if (i == RMD_TT_PER_DAY || i == RMD_TT_EXACT_TIME)
+            {
+                tsk.tipNext.rt.nDays = 1;
+            }
+            else if (i == RMD_TT_PER_WEEK)
+            {
+                tsk.tipNext.rt.nDays = GetWeekFromString(st + 4);
+            }
+            else
+            {
+                sscanf(st, CPubData::gstRmdTimeTypeName[i], &(tsk.tipNext.rt.nDays));
+            }
+        }
+    }
 }

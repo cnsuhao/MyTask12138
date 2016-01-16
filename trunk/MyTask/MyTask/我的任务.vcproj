@@ -540,6 +540,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\TimeoutTaskDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath="Types.cpp"
 				>
 				<FileConfiguration
@@ -674,6 +678,10 @@
 			</File>
 			<File
 				RelativePath="StdAfx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TimeoutTaskDlg.h"
 				>
 			</File>
 			<File

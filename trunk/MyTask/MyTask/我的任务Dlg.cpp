@@ -22,6 +22,7 @@
 #include "Types.h"
 #include "tinyxml/tinyxml.h"
 #include "VersionShowDlg.h"
+#include "TimeoutTaskDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -149,10 +150,11 @@ CMyDlg::CMyDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CMyDlg::IDD, pParent)
     , m_iSortIndex(-1)
     , m_bIsAscending(true)
+    , m_bIsOnStart(true)
 {
 	//{{AFX_DATA_INIT(CMyDlg)
 	m_stStatus = _T("就绪");
-	m_nSelectDate = 0;
+	m_nSelectDate = SI_ALL;
 	m_stFileType = _T("");
 	m_stCurTime = _T("");
 	m_stShowDate = _T("");
@@ -299,21 +301,21 @@ BOOL CMyDlg::OnInitDialog()
 	m_ctlToolBar.ModifyStyle(0, TBSTYLE_TRANSPARENT);
 
 	{
-		int i=0;
-		UINT id, style;
-		int image;
-		CString strTipText;
-		for(i=0; i<m_ctlToolBar.GetCount(); i++)
-		{
-			m_ctlToolBar.GetButtonInfo(i, id, style, image);
-			strTipText.LoadString(id);   
-			strTipText.Replace('\n','\0');
-			m_ctlToolBar.SetButtonText(i, LPCTSTR(strTipText));
-		}
-		//m_ctlToolBar.EnableDocking(CBRS_ALIGN_TOP);
-    WORD cx = LOWORD(m_ctlToolBar.GetToolBarCtrl().GetButtonSize());
-    WORD cy = HIWORD(m_ctlToolBar.GetToolBarCtrl().GetButtonSize());
-    m_ctlToolBar.GetToolBarCtrl().SetButtonSize(CSize(cx, cy));
+        int i=0;
+        UINT id, style;
+        int image;
+        CString strTipText;
+        for(i=0; i<m_ctlToolBar.GetCount(); i++)
+        {
+            m_ctlToolBar.GetButtonInfo(i, id, style, image);
+            strTipText.LoadString(id);   
+            strTipText.Replace('\n','\0');
+            m_ctlToolBar.SetButtonText(i, LPCTSTR(strTipText));
+        }
+        //m_ctlToolBar.EnableDocking(CBRS_ALIGN_TOP);
+        WORD cx = LOWORD(m_ctlToolBar.GetToolBarCtrl().GetButtonSize());
+        WORD cy = HIWORD(m_ctlToolBar.GetToolBarCtrl().GetButtonSize());
+        m_ctlToolBar.GetToolBarCtrl().SetButtonSize(CSize(cx, cy));
 
 	}
 //	m_ctlToolBar.AdjustLayout();
@@ -473,6 +475,8 @@ BOOL CMyDlg::OnInitDialog()
 
 	m_btnExit.LoadBitmaps(IDB_BITMAP_BTN_GEN, IDB_BITMAP_BTN_SEL, IDB_BITMAP_BTN_FOCUS, IDB_BITMAP_BTN_GRAY);
 	m_btnHide.LoadBitmaps(IDB_BITMAP_BTN_GEN, IDB_BITMAP_BTN_SEL, IDB_BITMAP_BTN_FOCUS, IDB_BITMAP_BTN_GRAY);
+
+    OnStart();
 
 	UpdateData(FALSE);
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -1823,7 +1827,7 @@ LRESULT CMyDlg::OnNotifyTray( WPARAM wParam,LPARAM lParam )
 
 void CMyDlg::RebuildTimeShaft()
 {
-	int i,j, tmp;
+	int i = 0, j = 0, tmp = 0;
 	ColorNode tmpNode1,tmpNode2;
 	m_arrTimeNode.RemoveAll();
 	for(i=0; i<720; i++)
@@ -1876,14 +1880,9 @@ void CMyDlg::RebuildTimeShaft()
 			m_nColorPt[j] = CO_NOT_STARTED;
 		}
 	}
-// 	for(j=0; j<720; j++)
-// 	{
-// 		if(m_nColorPt[j]>CO_STARTED)
-// 			m_nColorPt[j] = CO_STARTED;
-// 	}
 
-	int tmp2;
-	bool tmpOdd;
+	int tmp2 = 0;
+	bool tmpOdd = false;
 
 	// 检查已经开始的
 	for(i=0; i<m_ctlList.GetItemCount(); i++)
@@ -2209,118 +2208,65 @@ void CMyDlg::OnTimer(UINT nIDEvent)
 
 void CMyDlg::CheckTaskRemind()
 {
-	int i=0,j;
+	int i=0;
 	time_t tiNow = time(NULL);
-	int mins = 0;
-	int type;
 	for(i=0; i<m_arrTasks.GetSize(); i++)
 	{
 		// 开始提醒
-		mins = 0;
 		if (m_arrTasks[i].tiStartSet <= tiNow && !m_arrTasks[i].nIsTipStarted)
 		{
 			m_arrTasks[i].nIsTipStarted = 1;
-			m_nTipIndex = i;
-			m_nTipType = TT_CO_START;
-			if(!DoRemind(m_arrTasks[i], type, mins))
-			{
-				m_arrTasks[i].nIsTipStarted = 0;
-				return;
-			}
-			if (mins > 0)
-			{
-				time_t tiNow2 = time(NULL);
-				m_arrTasks[i].nIsTipExtra = 0;
-				m_arrTasks[i].tiExtraRmd = tiNow2 + mins*60;
-				m_stStatus.Format("任务[%s]将会在%s(%d分钟后)再次提醒！",
-					m_arrTasks[i].stTitle, LPCTSTR(GetDateTime(m_arrTasks[i].tiExtraRmd)), mins);
-				UpdateData(FALSE);
-			}
-			SetChange(true);
-			for(j=0; j<m_arrIndexMap.GetSize(); j++)
-			{
-				if (m_arrIndexMap[j]==i)
-				{
-					RedrawListCtrl(j);
-					break;
-				}
-			}
-			if((IfRebuildTimeShaft(m_nSelectDate) || m_ctlSelectDate.GetCount()==DEFAULT_SELECT_DATE+1) && m_ctlList.GetItemCount()>0)
-				RebuildTimeShaft();
-			else
-				ClearTimeShaft();
+            if (m_bIsOnStart) // 开始时批量处理
+            {
+                m_arrTimeoutTasks.Add(&(m_arrTasks[i]));
+            }
+            else
+            {
+                m_nTipIndex = i;
+                m_nTipType = TT_CO_START;
+                if (!DoTaskCommandImpl())
+                {
+                    return;
+                }
+            }
 		}
 
 		// 额外提醒
-		mins = 0;
 		if (m_arrTasks[i].tiExtraRmd <= tiNow && !(m_arrTasks[i].nIsTipExtra))
 		{
 			m_arrTasks[i].nIsTipExtra = 1;
-			m_nTipIndex = i;
-			m_nTipType = TT_CO_EXTRA;
-			if(!DoRemind(m_arrTasks[i], type, mins))
-			{
-				m_arrTasks[i].nIsTipExtra = 0;
-				return;
-			}
-			if (mins > 0)
-			{
-				time_t tiNow2 = time(NULL);
-				m_arrTasks[i].nIsTipExtra = 0;
-				m_arrTasks[i].tiExtraRmd = tiNow2 + mins*60;
-				m_stStatus.Format("任务[%s]将会在%s(%d分钟后)再次提醒！",
-					m_arrTasks[i].stTitle, LPCTSTR(GetDateTime(m_arrTasks[i].tiExtraRmd)), mins);
-				UpdateData(FALSE);
-			}
-			SetChange(true);
-			for(j=0; j<m_arrIndexMap.GetSize(); j++)
-			{
-				if (m_arrIndexMap[j]==i)
-				{
-					RedrawListCtrl(j);
-					break;
-				}
-			}
-			if((IfRebuildTimeShaft(m_nSelectDate) || m_ctlSelectDate.GetCount()==DEFAULT_SELECT_DATE+1) && m_ctlList.GetItemCount()>0)
-				RebuildTimeShaft();
-			else
-				ClearTimeShaft();
+            if (m_bIsOnStart) // 开始时批量处理
+            {
+                m_arrTimeoutTasks.Add(&(m_arrTasks[i]));
+            }
+            else
+            {
+                m_nTipIndex = i;
+                m_nTipType = TT_CO_EXTRA;
+                if (!DoTaskCommandImpl())
+                {
+                    return;
+                }
+            }
 		}
 
 		// 结束提醒
-		mins = 0;
 		if (m_arrTasks[i].tipNext.tiEndSet <= tiNow && !(m_arrTasks[i].nIsTipEnded))
 		{
 			m_arrTasks[i].nIsTipEnded = 1;
-			m_nTipIndex = i;
-			m_nTipType = TT_CO_END;
-			if(!DoRemind(m_arrTasks[i], type, mins))
-			{
-				m_arrTasks[i].nIsTipEnded = 0;
-				return;
-			}
-			if (mins > 0)
-			{
-				time_t tiNow2 = time(NULL);
-				m_arrTasks[i].nIsTipExtra = 0;
-				m_arrTasks[i].tiExtraRmd = tiNow2 + mins*60;
-				m_stStatus.Format("任务[%s]将会在%s(%d分钟后)再次提醒！",
-					m_arrTasks[i].stTitle, LPCTSTR(GetDateTime(m_arrTasks[i].tiExtraRmd)), mins);
-				UpdateData(FALSE);
-			}
-			SetChange(true);
-			for(j=0; j<m_arrIndexMap.GetSize(); j++)
-			{
-				if (m_arrIndexMap[j]==i)
-				{
-					RedrawListCtrl(j);
-					break;
-				}
-			}
-			if((IfRebuildTimeShaft(m_nSelectDate) || m_ctlSelectDate.GetCount()==DEFAULT_SELECT_DATE+1) && m_ctlList.GetItemCount()>0)
-				RebuildTimeShaft();
-			else
-				ClearTimeShaft();
+            if (m_bIsOnStart) // 开始时批量处理
+            {
+                m_arrTimeoutTasks.Add(&(m_arrTasks[i]));
+            }
+            else
+            {
+                m_nTipIndex = i;
+                m_nTipType = TT_CO_END;
+                if (!DoTaskCommandImpl())
+                {
+                    return;
+                }
+            }
 		}
 	}
 }
@@ -3590,23 +3536,40 @@ void CMyDlg::CheckDfTaskRemind()
             bool bRet = false;
             if (CheckMsgTypeRemind(tsk.nMsgType) && !CheckMsgTypeRunCmd(tsk.nMsgType))
             {
-                ADD_DEBUG("Before DoRemind");
-                bRet = DoRemind(tsk, type, mins);
-                if (!bRet)
+                if (m_bIsOnStart) // 开始时批量处理
                 {
-                    continue;
+                    m_arrTimeoutTasks.Add(&(tsk));
                 }
-                ADD_DEBUG("After DoRemind");
+                else
+                {
+                    ADD_DEBUG("Start DoRemind[%s][%s]", tsk.stTitle, tsk.stDetails);
+                    bRet = DoRemind(tsk, type, mins);
+                    if (!bRet)
+                    {
+                        continue;
+                    }
+                    ADD_DEBUG("End DoRemind");
+                }
             }
             if (CheckMsgTypeRunCmd(tsk.nMsgType))
             {
-                bRet = DoTaskCommand(tsk);
+                if (m_bIsOnStart) // 开始时批量处理
+                {
+                    m_arrTimeoutTasks.Add(&(tsk));
+                }
+                else
+                {
+                    ADD_DEBUG("Start DoTaskCommand[%s][%s]", tsk.stTitle, tsk.stCmd);
+                    bRet = DoTaskCommand(tsk);
+                    if(!bRet)
+                    {
+                        continue;
+                    }
+                    ADD_DEBUG("End DoTaskCommand");
+                }
             }
-            //if(!bRet)
-            //{
-            //    continue;
-            //}
-            //else
+
+            // 计算下次执行时间
             {
                 //ADD_DEBUG("Before CountNextRmdTime");
                 tsk.CountNextRmdTime(false);
@@ -3768,4 +3731,62 @@ void CMyDlg::OnAbout()
 void CMyDlg::WinHelp( DWORD_PTR dwData, UINT nCmd /*= HELP_CONTEXT */ )
 {
     OnStaticMyIcon();
+}
+
+void CMyDlg::OnStart()
+{
+    ADD_TRACE("开始批量处理 ...\n");
+    m_bIsOnStart = true;
+
+    // 采集过期任务
+    CheckTaskRemind();
+    CheckDfTaskRemind();
+
+    // 处理过期任务
+    if (GetTimeoutTaskCount() > 0)
+    {
+        CTimeoutTaskDlg dlg(this);
+        dlg.DoModal();
+        m_arrTimeoutTasks.RemoveAll();
+    }
+
+    m_bIsOnStart = false;
+    ADD_TRACE("结束批量处理 ...\n");
+}
+
+bool CMyDlg::DoTaskCommandImpl()
+{
+    int taskIndex = m_nTipIndex;
+    int type = 0, mins = 0; // 暂时无作用
+    if(!DoRemind(m_arrTasks[taskIndex], type, mins))
+    {
+        m_arrTasks[taskIndex].nIsTipStarted = 0;
+        return false;
+    }
+    if (mins > 0)
+    {
+        time_t tiNow2 = time(NULL);
+        m_arrTasks[taskIndex].nIsTipExtra = 0;
+        m_arrTasks[taskIndex].tiExtraRmd = tiNow2 + mins*60;
+        m_stStatus.Format("任务[%s]将会在%s(%d分钟后)再次提醒！",
+            m_arrTasks[taskIndex].stTitle, LPCTSTR(GetDateTime(m_arrTasks[taskIndex].tiExtraRmd)), mins);
+        UpdateData(FALSE);
+    }
+    SetChange(true);
+    for(int j=0; j<m_arrIndexMap.GetSize(); j++)
+    {
+        if (m_arrIndexMap[j]==taskIndex)
+        {
+            RedrawListCtrl(j);
+            break;
+        }
+    }
+    if((IfRebuildTimeShaft(m_nSelectDate) 
+          || m_ctlSelectDate.GetCount()==DEFAULT_SELECT_DATE+1) 
+        && m_ctlList.GetItemCount()>0)
+        RebuildTimeShaft();
+    else
+        ClearTimeShaft();
+
+    return true;
 }
