@@ -358,5 +358,41 @@ void CMyTaskMgrDlg::OnBnClickedEditDfExport()
 void CMyTaskMgrDlg::OnBnClickedEditDfImport()
 {
     // TODO: 在此添加控件通知处理程序代码
-    ::MessageBox("Not Support");
+    UpdateData(TRUE);
+    CString stFileName;
+    CString stErrMsg;
+    if (!GetImportFileName(FT_XML, stFileName, stErrMsg, this))
+    {
+        ::MessageBox(stErrMsg);
+        return;
+    }
+
+    TiXmlDocument doc(stFileName);
+    if (!doc.LoadFile())
+    {
+        //MessageBox("Open File Error!");
+        MessageBox("打开文件失败！", "打开文件失败");
+        return;
+    }
+    TiXmlNode* pNode = NULL;
+    pNode = doc.FirstChild();
+
+    while(pNode != NULL)
+    {
+        if (!CPubData::ParseXmlDataNodeAsDefaultTask(pNode))
+        {
+            MessageBox("ParseXmlDataNodeAsDefaultTask ERROR!");
+            break;
+        }
+        pNode = pNode->NextSibling();
+    }
+
+    m_ctlListAll.DeleteAllItems();
+
+    for(int i=0; i<CPubData::gArrDfTasks.GetCount(); i++)
+    {
+        AddDfTask(CPubData::gArrDfTasks[i], i);
+    }
+
+    return;
 }

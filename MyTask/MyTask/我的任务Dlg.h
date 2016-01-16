@@ -54,11 +54,22 @@ public:
 	bool LoadFileRecord(FILE*fp, tagTaskMsg& task);
 	bool WriteFileHead(FILE*fp, const FileHead& fileHead);
 	bool WriteFileRecord(FILE*fp, const TaskMsg& task);
+    PTaskMsg GetTimeoutTaskAt(int index_)
+    {
+        if (index_ >=0 && index_ < GetTimeoutTaskCount())
+        {
+            return m_arrTimeoutTasks.ElementAt(index_);
+        }
+        return NULL;
+    }
+    int GetTimeoutTaskCount()
+    {
+        return m_arrTimeoutTasks.GetCount();
+    }
 
 // Dialog Data
 	//{{AFX_DATA(CMyDlg)
 	enum { IDD = IDD_MY_DIALOG };
-    enum { DEFAULT_SELECT_DATE = 3 };
 	CComboBox	m_ctlSelectDate;
 	CListCtrl	m_ctlListTmp;
 	CListCtrl	m_ctlList;
@@ -93,6 +104,7 @@ protected:
 	CArray<int, int&> m_arrIndexMap;
 	CArray<ColorNode, ColorNode&> m_arrTimeNode;
 	CArray<TaskMsg, TaskMsg&> m_arrCpy;
+    CArray<PTaskMsg, PTaskMsg> m_arrTimeoutTasks;
 	int m_nColorPt[720];
 	CRect m_objRect;
 	CMap<int, int, CString, LPCTSTR> m_mapTip;
@@ -105,6 +117,7 @@ protected:
         SF_ASC_FLAG,
         SF_DESC_FLAG
     };
+    bool m_bIsOnStart;  // 是否在程序刚开始时
 
 protected:
 	bool OnExportAllByDay();
@@ -129,7 +142,10 @@ protected:
 	void RebuildTimeShaft();
 	void SetTips();
 	void CheckTaskRemind();
-	BOOL UpdateData(BOOL bSaveAndValidate = TRUE);
+
+    bool DoTaskCommandImpl();
+
+    BOOL UpdateData(BOOL bSaveAndValidate = TRUE);
 	void InitSomeTasks();
 	void GetCellName( int p1, int p2, CString& colname );
 	bool SetTaskToExcel( int iTaskIndex, int iSheetIndex, COleSafeArray& saRet);
@@ -142,6 +158,8 @@ protected:
 	void OnMenuCopyTask();
 	void OnMenuClearCopy();
 	void OnMenuPasteTask();
+
+    void OnStart(); // 程序刚开始的批量处理
 
 	// Generated message map functions
 	//{{AFX_MSG(CMyDlg)
@@ -189,7 +207,7 @@ protected:
     void OnExportAllByDayTxt();
     bool IfRebuildTimeShaft(int index_)
     {
-        if (index_ == 0 || index_ == 2)
+        if (index_ == SI_ALL || index_ == SI_NON_FINISHED)
         {
             return false;
         }
