@@ -24,6 +24,10 @@
 
 #include <afxsock.h>		// MFC socket extensions
 
+#pragma warning(disable: 4996)
+#pragma warning(disable: 4244)
+#pragma warning(disable: 4800)
+
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

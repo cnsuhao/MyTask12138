@@ -950,6 +950,7 @@ short GetWeekFromString( const char* st )
             return i + 1;
         }
     }
+    return 0;
 }
 
 void GetRmdTypeFromString(TaskMsg& tsk, const char* st)
