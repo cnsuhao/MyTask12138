@@ -82,7 +82,7 @@ BOOL CVersionShowDlg::OnInitDialog()
 
     SetVersionInfo(CPubData::gstVersionModifyString, 
         CPubData::gnVersionModifySize);
-    for(int i=0; i<vecTitle.size(); ++i)
+    for(int i=0; i<(int)vecTitle.size(); ++i)
     {
         m_ctrlVerList.AddString(vecTitle[i].c_str());
     }
@@ -98,7 +98,7 @@ void CVersionShowDlg::DoSelectVersion( int index )
         m_ctrlDetailsList.DeleteString(0);
     if (index <= 0)
     {
-        for (int i=0; i<vecVers.size(); ++i)
+        for (int i=0; i<(int)vecVers.size(); ++i)
         {
             m_ctrlDetailsList.AddString(vecTitle[i+1].c_str());
 

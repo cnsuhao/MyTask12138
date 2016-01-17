@@ -476,7 +476,9 @@ BOOL CMyDlg::OnInitDialog()
 	m_btnExit.LoadBitmaps(IDB_BITMAP_BTN_GEN, IDB_BITMAP_BTN_SEL, IDB_BITMAP_BTN_FOCUS, IDB_BITMAP_BTN_GRAY);
 	m_btnHide.LoadBitmaps(IDB_BITMAP_BTN_GEN, IDB_BITMAP_BTN_SEL, IDB_BITMAP_BTN_FOCUS, IDB_BITMAP_BTN_GRAY);
 
-    OnStart();
+    UpdateData(FALSE);
+
+    OnStart(); // 过期提醒批量处理
 
 	UpdateData(FALSE);
 	return TRUE;  // return TRUE  unless you set the focus to a control
