@@ -429,6 +429,7 @@ public:
 		memset(m_stFileBakGround, 0, MAX_FILE_NAME);
 		m_nIsSetLogViewer = 0;
 		memset(m_stLogViewer, 0, MAX_FILE_NAME);
+        memset(m_pReserved, 0, sizeof(m_pReserved));
 		m_nIsRunAtStartUp = 0;
 		m_nTrayTipType = 0;
 	}

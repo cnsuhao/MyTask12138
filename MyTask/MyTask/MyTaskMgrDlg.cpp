@@ -9,12 +9,13 @@
 //#include "我的任务Dlg.h"
 #include "MyLog.h"
 #include "tinyxml/tinyxml.h"
+#include <new.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+//#ifdef _DEBUG
+//#define new DEBUG_NEW
+//#undef THIS_FILE
+//static char THIS_FILE[] = __FILE__;
+//#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CMyTaskMgrDlg dialog
@@ -115,7 +116,6 @@ void CMyTaskMgrDlg::OnEditDfModify()
 	// TODO: Add your control notification handler code here
 	int i;
 	bool bFound = false;
-	int count = 0;
 	CString stTitles="编辑默认任务 ";
 	for(i=0; i<m_ctlListAll.GetItemCount(); i++)
 	{
@@ -237,7 +237,6 @@ void CMyTaskMgrDlg::SetDataToCtrl( const TaskMsg& tsk, int index, bool IsAdd )
 {
 	CString st;
 	CTime tiTmp;
-	int i = index;
 	st.Format("%-2d", index + 1);
 	int nRow = index;
 	if (IsAdd)
@@ -254,23 +253,7 @@ void CMyTaskMgrDlg::SetDataToCtrl( const TaskMsg& tsk, int index, bool IsAdd )
 	tiTmp = tsk.tiNextRmd;
 	st = tiTmp.Format("%Y-%m-%d %H:%M");
 	m_ctlListAll.SetItemText(nRow, 2, LPCTSTR(st));
-		
-// 	tiTmp = tsk.tiEndSet;
-// 	st = tiTmp.Format("%Y-%m-%d %H:%M");
-// 	m_ctlListAll.SetItemText(nRow, 3, LPCTSTR(st));
-		
-// 	st.Format("	%d%%",tsk.nPercent);
-// 	m_ctlListAll.SetItemText(nRow, 4, LPCTSTR(st));
-	
-	//tiTmp = tsk.tiEnd;
-	//if (tiTmp != 0)
-	//{
-	//	st = tiTmp.Format("%Y-%m-%d %H:%M");
-	//}
-	//else
-	//{
-	//	st.Empty();
-	//}
+
     st.Empty();
     if (CheckMsgTypeRemind(tsk.nMsgType))
     {
@@ -322,7 +305,13 @@ void CMyTaskMgrDlg::OnBnClickedEditDfExport()
     TiXmlElement* pElmField = NULL; // 一个指向Element的指针
     TiXmlText* pText = NULL; // 一个指向Text的指针
 
-    pTopEles = new TiXmlElement("Tasks");
+    pTopEles = new (std::nothrow) TiXmlElement("Tasks");
+    if (pTopEles == NULL)
+    {
+        ADD_ERROR("new pTopEles Failed!");
+        ::MessageBox("new pTopEles Failed!");
+        return;
+    }
     pTopEles->SetAttribute("type", "所有任务");
     pTopEles->SetAttribute("num", nrows);
 
@@ -330,15 +319,33 @@ void CMyTaskMgrDlg::OnBnClickedEditDfExport()
 
     for( int  iRow   =   0;   iRow   <  nrows;   iRow++)//将列表内容写入EXCEL    
     {
-        pElmTask = new TiXmlElement("Task");
+        pElmTask = new (std::nothrow) TiXmlElement("Task");
+        if (pElmTask == NULL)
+        {
+            ADD_ERROR("new pElmTask Failed!");
+            ::MessageBox("new pElmTask Failed!");
+            return;
+        }
         pElmTask->SetAttribute("type", "XXXXX");
         pElmTask->SetAttribute("index", iRow);
 
         for   (int iCol = 1;   iCol < ncols + 1;   iCol++)    
         {
-            pElmField = new TiXmlElement(CPubData::gstDefaultListTitles[iCol]);
+            pElmField = new (std::nothrow) TiXmlElement(CPubData::gstDefaultListTitles[iCol]);
+            if (pElmField == NULL)
+            {
+                ADD_ERROR("new pElmField Failed!");
+                ::MessageBox("new pElmField Failed!");
+                return;
+            }
             GetDefaultTaskDataByCol(szTemp, CPubData::gArrDfTasks[iRow], iCol);
-            pText = new TiXmlText(LPCTSTR(szTemp));
+            pText = new (std::nothrow) TiXmlText(LPCTSTR(szTemp));
+            if (pText == NULL)
+            {
+                ADD_ERROR("new pText Failed!");
+                ::MessageBox("new pText Failed!");
+                return;
+            }
             pElmField->InsertEndChild(*pText);
             pElmTask->InsertEndChild(*pElmField);
             SAFE_DELETE(pText);
@@ -371,7 +378,7 @@ void CMyTaskMgrDlg::OnBnClickedEditDfImport()
     if (!doc.LoadFile())
     {
         //MessageBox("Open File Error!");
-        MessageBox("打开文件失败！", "打开文件失败");
+        ::MessageBox("打开文件失败！", "打开文件失败");
         return;
     }
     TiXmlNode* pNode = NULL;
@@ -381,7 +388,7 @@ void CMyTaskMgrDlg::OnBnClickedEditDfImport()
     {
         if (!CPubData::ParseXmlDataNodeAsDefaultTask(pNode))
         {
-            MessageBox("ParseXmlDataNodeAsDefaultTask ERROR!");
+            ::MessageBox("ParseXmlDataNodeAsDefaultTask ERROR!");
             break;
         }
         pNode = pNode->NextSibling();

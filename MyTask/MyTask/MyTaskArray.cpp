@@ -46,7 +46,7 @@ void MyTaskArray::AddTask(TaskMsg& msg )
 			{
 				p[i] = m_pTasks[i];
 			}
-			delete m_pTasks;
+			delete [] m_pTasks;
 			
 			m_pTasks = p;
 			m_nMaxCount += COUNT_INC;

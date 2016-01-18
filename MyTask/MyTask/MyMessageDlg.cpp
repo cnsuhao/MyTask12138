@@ -18,6 +18,8 @@ static char THIS_FILE[] = __FILE__;
 
 CMyMessageDlg::CMyMessageDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CMyMessageDlg::IDD, pParent)
+    , m_nCloseTime(0)
+    , m_nTimeLeft(0)
 {
 	//{{AFX_DATA_INIT(CMyMessageDlg)
 	m_stMsgText = _T("");
@@ -27,7 +29,12 @@ CMyMessageDlg::CMyMessageDlg(CWnd* pParent /*=NULL*/)
 }
 
 CMyMessageDlg::CMyMessageDlg( const CString& text, const CString& title/*="¸æ¾¯"*/, int closeSeconds/*=5*/,BOOL bDefaultOnOK/*=TRUE*/, CWnd* pParent /*= NULL*/ )
-: CDialog(CMyMessageDlg::IDD, pParent), m_nCloseTime(closeSeconds),m_stTitle(title), m_stMsgText(text), m_bIsDefaultOK(bDefaultOnOK)
+    : CDialog(CMyMessageDlg::IDD, pParent)
+    , m_nCloseTime(closeSeconds)
+    , m_stTitle(title)
+    , m_stMsgText(text)
+    , m_bIsDefaultOK(bDefaultOnOK)
+    , m_nTimeLeft(closeSeconds)
 {
 	m_stTitle += " - " + CPubData::GetPureModuleName();
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);

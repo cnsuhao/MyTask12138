@@ -23,6 +23,7 @@ CMyDfTaskEditDlg::CMyDfTaskEditDlg(TaskMsg task, int type, CWnd* pParent /*=NULL
     , m_bIsOperSet(FALSE)
     , m_stCmd(_T(""))
     , m_stCertainDay(_T(""))
+    , m_nDateType(RMD_TT_MAX)
 {
 	//{{AFX_DATA_INIT(CMyDfTaskEditDlg)
 	m_stTitle = _T("");
