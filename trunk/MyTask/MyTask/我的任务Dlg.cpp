@@ -3260,7 +3260,7 @@ void CMyDlg::DoRedrawTrayIcon( bool bReset/*=false*/ )
 
 LRESULT CMyDlg::OnTrayIconTipOff( WPARAM wParam,LPARAM lParam )
 {
-	MessageBox("2");
+    ::MessageBox("2");
 	m_tnid.uFlags = NIF_ICON|NIF_MESSAGE|NIF_TIP;
 	m_tnid.uTimeout = 0;
 	m_tnid.dwInfoFlags = 0;

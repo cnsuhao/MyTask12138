@@ -107,7 +107,7 @@ const char * CPubData::gstVersionModifyString[] = {
     "    ④ ★配置文件编辑按钮(计划中)",
     "    ⑤ ★天气预报功能，支持多城市配置(计划中)",
     "    ⑥ ★重要日期展示(计划中)",
-    "    ⑦ ★CppCheck代码优化(计划中)",
+    "    ⑦ ★CppCheck代码优化(2016-01-18)",
     "" // 40
 };
 
@@ -204,12 +204,18 @@ bool CPubData::SaveData()
 	// 加密和保存
 	EncryptData(pData, pEData, len);
 	int k = fwrite(&len, sizeof(len), 1, fp);
+    ASSERT(1 == k);
 	k = fwrite(pEData, 1, len, fp);
+    ASSERT(1 == k);
 	k = fflush(fp);
+    ASSERT(0 == k);
 
 	delete []pData;
+    pData = NULL;
 	delete []pEData;
+    pEData = NULL;
 	fclose(fp);
+    fp = NULL;
 	return true;
 }
 
@@ -320,12 +326,12 @@ bool CheckDate( const char* stDay, time_t * ptiDate /* = NULL */)
     memset(&tmDay, 0, sizeof(tmDay));
     if (strchr(stDay, '-') != NULL)
     {
-        sscanf(stDay, "%d-%d-%d", 
+        sscanf(stDay, "%4d-%2d-%2d", 
             &tmDay.tm_year, &tmDay.tm_mon, & tmDay.tm_mday);
     }
     else if (strchr(stDay, '/') != NULL)
     {
-        sscanf(stDay, "%d/%d/%d", 
+        sscanf(stDay, "%4d/%2d/%2d", 
             &tmDay.tm_year, &tmDay.tm_mon, & tmDay.tm_mday);
     }
     else
@@ -494,7 +500,6 @@ bool CPubData::ParseXmlDataNodeAsDefaultTask(TiXmlNode* pNode)
     {
     case TiXmlNode::TINYXML_DECLARATION:
         // 略过
-        pNode = pNode->NextSibling();
         break;
     case TiXmlNode::TINYXML_COMMENT:
         // 略过

@@ -157,7 +157,7 @@ tagFileHead::tagFileHead()
 
 UINT16 tagFileHead::GetCheckSum()
 {
-	UINT16 sum = 0, sum2 = 0;
+	UINT16 sum = 0;
 	UINT8* p = (UINT8*)this;
 	int i = 0;
 	for (i=0; i < sizeof(FileHead); i++)
@@ -179,7 +179,7 @@ UINT16 tagFileHead::GetKey()
 
 UINT16 tagTaskMsg::GetCheckSum()
 {
-	UINT16 sum = 0, sum2 = 0;
+	UINT16 sum = 0;
 	UINT8* p = (UINT8*)this;
 	int i = 0;
 	for (i=0; i < sizeof(TaskMsg); i++)
@@ -515,7 +515,7 @@ bool CSetMsg::SetData( UINT8* pData, int iLen )
 		else
 		{
 			// Ð´ÈëÔ¤Áô×Ö¶Î
-			memset(m_pReserved, '\0', RESERVE_LEN + 4);
+			memset(m_pReserved, '\0', RESERVE_LEN);
 			m_pReserved[RESERVE_LEN-1] = '\0';
 			COPYSTR(pData, index, m_pReserved);
 		}
@@ -930,8 +930,9 @@ LPCTSTR GetDefaultTaskDataByCol( CString& sBuf, const TaskMsg& tsk, int iCol )
 time_t GetTimeFromString( const char* stTime )
 {
     struct tm ti;
+    memset(&ti, 0, sizeof(ti));
 
-    if (sscanf(stTime, "%d-%d-%d %d:%d", &ti.tm_year, 
+    if (sscanf(stTime, "%4d-%2d-%2d %2d:%2d", &ti.tm_year, 
         &ti.tm_mon, &ti.tm_mday, &ti.tm_hour, &ti.tm_min) == 5)
     {
         ti.tm_year -= 1900;

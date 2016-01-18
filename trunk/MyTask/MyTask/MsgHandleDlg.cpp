@@ -22,6 +22,7 @@ CMsgHandleDlg::CMsgHandleDlg(const TaskMsg& task, CWnd* pParent /*=NULL*/)
 , m_stEndTimeTitle(_T(""))
 , m_stStartTimeTitle(_T(""))
 , m_stPrcntTitle(_T(""))
+, m_nRmdType(RMD_NOT_REMIND)
 {
 	//{{AFX_DATA_INIT(CMsgHandleDlg)
 	m_nMinToRemind = 15;

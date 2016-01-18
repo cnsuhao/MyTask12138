@@ -71,7 +71,8 @@ BOOL CTimeoutTaskDlg::OnInitDialog()
 
     m_btnAllKnown.LoadBitmaps(IDB_BITMAP_BTN_GEN, IDB_BITMAP_BTN_SEL, IDB_BITMAP_BTN_FOCUS, IDB_BITMAP_BTN_GRAY);
 
-    CMyDlg * pDlg = (CMyDlg *)GetParent();
+    // CppCheck Error: C-style pointer casting
+    CMyDlg * pDlg = dynamic_cast<CMyDlg*>(GetParent());
     int size = pDlg->GetTimeoutTaskCount();
     {
         CString st;

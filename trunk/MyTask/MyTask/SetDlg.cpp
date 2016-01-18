@@ -21,6 +21,7 @@ static char THIS_FILE[] = __FILE__;
 
 CSetDlg::CSetDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSetDlg::IDD, pParent)
+    , m_nMusicIndex(-1)
 {
 	//{{AFX_DATA_INIT(CSetDlg)
 	m_nNameType = -1;
@@ -96,7 +97,6 @@ END_MESSAGE_MAP()
 void CSetDlg::OnButtonAddM() 
 {
 	// TODO: Add your control notification handler code here
-	FILE* fp = NULL;
 	CFileDialog dlg(TRUE, "WAV文件(*.wav)|*.wav|", NULL,
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, 
 		"WAV文件(*.wav)|*.wav|所有文件(*.*)|*.*|",
@@ -159,7 +159,6 @@ void CSetDlg::OnButtonStopM()
 void CSetDlg::OnButtonExplorer() 
 {
 	// TODO: Add your control notification handler code here
-	FILE* fp = NULL;
 	CFileDialog dlg(TRUE, "任务数据文件(*.dat)|*.dat|", NULL,
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, 
 		"任务数据文件(*.dat)|*.dat|所有文件(*.*)|*.*|",
@@ -430,7 +429,6 @@ void CSetDlg::OnCancel()
 void CSetDlg::OnBtnChgBak() 
 {
 	// TODO: Add your control notification handler code here
-	FILE* fp = NULL;
 	CFileDialog dlg(TRUE, "背景图片(*.bmp)|*.bmp|", NULL,
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, 
 		"背景图片(*.bmp)|*.bmp|",
