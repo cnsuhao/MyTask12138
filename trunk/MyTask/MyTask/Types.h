@@ -289,8 +289,8 @@ public:
     tagTaskMsgTime32()
     {
         strcpy(stTitle, "");
-        tiStartSet = time(NULL);
-        tipNext.tiEndSet = time(NULL);
+        tiStartSet = time(NULL) + 60 * 5;
+        tipNext.tiEndSet = tiStartSet + 60 * 5;
         tiExtraRmd = 0;
         nMusicIndex = 0;
         strcpy(stCmd, "");
@@ -353,8 +353,8 @@ typedef struct tagTaskMsg
 	tagTaskMsg()
 	{
 		strcpy(stTitle, "");
-		tiStartSet = time(NULL);
-		tipNext.tiEndSet = time(NULL);
+		tiStartSet = time(NULL) + 60 * 5;
+		tipNext.tiEndSet = tiStartSet + 60 * 5;
 		tiExtraRmd = 0;
 		nMusicIndex = 0;
 		strcpy(stCmd, "");
