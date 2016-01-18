@@ -67,7 +67,7 @@ const char* CPubData::gstWeekDayName[]={
     "日","一","二","三","四","五","六"
 };
 
-const int CPubData::gnVersionModifySize = 39;
+const int CPubData::gnVersionModifySize = 40;
 const char * CPubData::gstVersionModifyString[] = {
     "★v1.4 基本功能",
     "    ① ★任务的添加，删除和修改",
@@ -101,13 +101,14 @@ const char * CPubData::gstVersionModifyString[] = {
     "    ⑩ ★编译告警消除(2016-01-17)",
     "", // 31
     "★v1.8 新增功能：", 
-    "    ① ★根据屏幕分辨率修改按钮位置和大小(计划中)",
+    "    ① ★根据屏幕分辨率修改按钮位置和大小(2016-01-18)",
     "    ② ★消息提醒强制最前端(计划中)",
     "    ③ ★消息框加上图标(计划中)",
     "    ④ ★配置文件编辑按钮(计划中)",
     "    ⑤ ★天气预报功能，支持多城市配置(计划中)",
     "    ⑥ ★重要日期展示(计划中)",
-    "" // 39
+    "    ⑦ ★CppCheck代码优化(计划中)",
+    "" // 40
 };
 
 CPubData::CPubData()
