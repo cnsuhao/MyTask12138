@@ -242,6 +242,7 @@ BEGIN_MESSAGE_MAP(CMyDlg, CDialog)
 	ON_MESSAGE(NIN_BALLOONTIMEOUT, OnTrayIconTipOff)
 	//}}AFX_MSG_MAP
     ON_COMMAND(ID_32839, &CMyDlg::OnAbout)
+    ON_COMMAND(IDM_MAIN_INI_EDIT, &CMyDlg::OnMenuMainIniEdit)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -2550,7 +2551,6 @@ void CMyDlg::OnMainViewLog()
 {
 	// TODO: Add your command handler code here
 	CString stLogFile = CMyLog::GetLogPointer()->GetLogFileName();
-	//MessageBox(m_stOpenLogCmd+"\r\n"+stLogFile);
 	if (m_stOpenLogCmd.IsEmpty())
 	{
 		::ShellExecute(NULL,"open","notepad.exe",LPCTSTR(stLogFile),LPCTSTR(stLogFile),SW_SHOWDEFAULT);
@@ -3791,4 +3791,28 @@ bool CMyDlg::DoTaskCommandImpl()
         ClearTimeShaft();
 
     return true;
+}
+
+void CMyDlg::OnMenuMainIniEdit()
+{
+    // TODO: 在此添加命令处理程序代码
+    CString stLogFile = CPubData::GetCurrentDir() + "\\task.ini";
+    if (m_stOpenLogCmd.IsEmpty())
+    {
+        ::ShellExecute(NULL,"open","notepad.exe",LPCTSTR(stLogFile),LPCTSTR(stLogFile),SW_SHOWDEFAULT);
+    }
+    else
+    {
+        int i = m_stOpenLogCmd.Find(".bat");
+        int j = m_stOpenLogCmd.Find(".cmd");
+        if ( (i>0 && i+4 == m_stOpenLogCmd.GetLength()) 
+            || (j>0 && j+4 == m_stOpenLogCmd.GetLength())  )
+        {
+            ::ShellExecute(NULL,"open", LPCTSTR(m_stOpenLogCmd),LPCTSTR(stLogFile),LPCTSTR(stLogFile),SW_HIDE);
+        }
+        else
+        {
+            ::ShellExecute(NULL,"open", LPCTSTR(m_stOpenLogCmd),LPCTSTR(stLogFile),LPCTSTR(stLogFile),SW_SHOWDEFAULT);
+        }
+    }
 }

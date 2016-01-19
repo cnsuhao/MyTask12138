@@ -219,6 +219,8 @@ protected:
     void SetColumnSortFlag( int m_iSortIndex, TagSortFlag flag );
 public:
     afx_msg void OnAbout();
+public:
+    afx_msg void OnMenuMainIniEdit();
 };
 
 //{{AFX_INSERT_LOCATION}}

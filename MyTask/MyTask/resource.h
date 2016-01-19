@@ -225,13 +225,15 @@
 #define IDM_MAIN_CLEAR_COPY             32836
 #define IDM_MAIN_DF_TASKS               32837
 #define ID_32839                        32839
+#define ID_32840                        32840
+#define IDM_MAIN_INI_EDIT               32841
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        193
-#define _APS_NEXT_COMMAND_VALUE         32840
+#define _APS_NEXT_COMMAND_VALUE         32842
 #define _APS_NEXT_CONTROL_VALUE         1100
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
