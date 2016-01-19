@@ -56,13 +56,13 @@ void CMySubmitDlg::OnOK()
 	UpdateData();
 	if(m_stPer.IsEmpty())
 	{
-		::MessageBox("请选择或输入当前任务进度","数据错误",3);
+		::MessageBox("请选择或输入当前任务进度", "数据错误", MB_ICONWARNING, 3);
 		return;
 	}
 	int nPer = atoi(LPCTSTR(m_stPer));
 	if (nPer < 0 || nPer>100)
 	{
-		::MessageBox("进度值错误，只能是[0,100]","数据错误",3);
+		::MessageBox("进度值错误，只能是[0,100]", "数据错误", MB_ICONWARNING, 3);
 		return;
 	}
 	CDialog::OnOK();

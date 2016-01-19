@@ -774,6 +774,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\webico\Error.ico"
+				>
+			</File>
+			<File
 				RelativePath="res\ico00001.ico"
 				>
 			</File>
@@ -782,11 +786,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\webico\icon1.ico"
+				>
+			</File>
+			<File
 				RelativePath="res\idr_main.ico"
 				>
 			</File>
 			<File
+				RelativePath=".\res\webico\info.ico"
+				>
+			</File>
+			<File
 				RelativePath="res\toolbar1.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\webico\Warning.ico"
 				>
 			</File>
 			<File

@@ -5,6 +5,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 #include "MyButton.h"
+#include "afxwin.h"
 // MyMessageDlg.h : header file
 //
 
@@ -16,7 +17,7 @@ class CMyMessageDlg : public CDialog
 // Construction
 public:
 	CMyMessageDlg(CWnd* pParent = NULL);   // standard constructor
-	CMyMessageDlg(const CString& text, const CString& title="御少", int closeSeconds=5, BOOL bDefaultOnOK=TRUE, CWnd* pParent = NULL);   // standard constructor
+	CMyMessageDlg(const CString& text, const CString& title="御少", int closeSeconds=5, BOOL bDefaultOnOK=TRUE, UINT uType = MB_ICONINFORMATION, CWnd* pParent = NULL);   // standard constructor
 
 	void SetTitle(const CString& title);
 	void SetMessageText(const CString& text);
@@ -47,6 +48,7 @@ protected:
 	CString m_stTitle;
 	HICON m_hIcon;
 	BOOL m_bIsDefaultOK;
+    UINT m_uType;
 
 	// Generated message map functions
 	//{{AFX_MSG(CMyMessageDlg)
@@ -57,6 +59,8 @@ protected:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+public:
+    CStatic m_objIco;
 };
 
 //{{AFX_INSERT_LOCATION}}

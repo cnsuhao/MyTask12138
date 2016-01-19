@@ -653,7 +653,7 @@ void CMyDlg::OnButtonToolDel()
 		UpdateData(FALSE);
 		return;
 	}
-	if (::MessageBox("确认删除？","确认", 10, FALSE) == IDOK)
+	if (::MessageBox("确认删除？","确认", MB_ICONINFORMATION, 10, FALSE) == IDOK)
 	{
 		while (1)
 		{
@@ -896,7 +896,7 @@ void CMyDlg::OnButtonToolOpen()
 		if (!DoOpen(dlg.GetPathName()))
 		{
 			m_stStatus.Format("打开文件[%s]失败！",LPCTSTR(dlg.GetPathName()));
-			::MessageBox(m_stStatus,"失败", 3);
+			::MessageBox(m_stStatus,"失败", MB_ICONERROR, 3);
 		}
 		else
 		{
@@ -917,7 +917,7 @@ void CMyDlg::OnButtonToolOpenDefault()
 	if (!DoOpen(CPubData::setMsg.GetDefaultFileName()))
 	{
 		m_stStatus.Format("打开文件[%s]失败！",CPubData::setMsg.GetDefaultFileName());
-		::MessageBox(m_stStatus,"失败");
+		::MessageBox(m_stStatus,"失败", MB_ICONERROR);
 	}
 	else
 	{
@@ -946,7 +946,7 @@ void CMyDlg::OnButtonToolSave()
 	else if (!DoSave(stTmp))
 	{
 		m_stStatus.Format("保存文件[%s]失败！", LPCTSTR(stTmp));
-		::MessageBox(m_stStatus,"保存失败");
+		::MessageBox(m_stStatus,"保存失败", MB_ICONERROR);
 	}
 	else
 	{
@@ -963,12 +963,12 @@ void CMyDlg::OnButtonToolSaveDefault()
 	if (stTmp.IsEmpty())
 	{
 		m_stStatus.Format("保存为默认文件失败：未指定默认文件名！", LPCTSTR(stTmp));
-		::MessageBox(m_stStatus + "\r\n请先选择设置，设置默认的文件名","保存失败");
+		::MessageBox(m_stStatus + "\r\n请先选择设置，设置默认的文件名","保存失败", MB_ICONWARNING);
 	}
 	else if (!DoSave(stTmp))
 	{
 		m_stStatus.Format("保存文件[%s]失败！", LPCTSTR(stTmp));
-		::MessageBox(m_stStatus,"保存失败");
+		::MessageBox(m_stStatus,"保存失败", MB_ICONERROR);
 	}
 	else
 	{
@@ -991,7 +991,7 @@ void CMyDlg::OnButtonToolSaveAs()
 		if (!DoSave(dlg.GetPathName()))
 		{
 			m_stStatus.Format("保存文件[%s]失败！", LPCTSTR(dlg.GetPathName()));
-			::MessageBox(m_stStatus,"保存失败");
+			::MessageBox(m_stStatus,"保存失败", MB_ICONERROR);
 		}
 		else
 		{
@@ -1579,7 +1579,7 @@ bool CMyDlg::DoOpen( const CString& stFileName )
 	if (!LoadFileHead(fp, m_objFileHead))
 	{
 		m_stStatus.Format("读取打开文件[%s]失败！",LPCTSTR(stFileName));
-		::MessageBox(m_stStatus,"读取失败");
+		::MessageBox(m_stStatus,"读取失败", MB_ICONERROR);
 		UpdateData(FALSE);
 		return false;
 	}
@@ -1628,7 +1628,7 @@ bool CMyDlg::DoOpenDfTasks(const CString& stFileName )
 	{
 		m_stStatus.Format("读取打开文件[%s]失败！",LPCTSTR(stFileName));
         ADD_ERROR(LPCTSTR(m_stStatus));
-		::MessageBox(m_stStatus,"读取失败");
+		::MessageBox(m_stStatus,"读取失败", MB_ICONERROR);
 		UpdateData(FALSE);
 		m_objFileHead = tmpHead;
 		return false;
@@ -1751,13 +1751,14 @@ void CMyDlg::OnRealExit()
 		}
 		if (stTmp.IsEmpty())
 		{
-			::MessageBox("没有打开文件！\r\n也没有默认文件！所以不会进行保存！\n请先指定要保存的文件或者在设置中指定默认文件！");
+			::MessageBox("没有打开文件！\r\n也没有默认文件！所以不会进行保存！\n请先指定要保存的文件或者在设置中指定默认文件！"
+                "", MB_ICONWARNING);
 			return;
 		}
 		else if (!DoSave(stTmp))
 		{
 			m_stStatus.Format("保存文件[%s]失败！", LPCTSTR(stTmp));
-			::MessageBox(m_stStatus,"保存失败");
+			::MessageBox(m_stStatus,"保存失败", MB_ICONERROR);
             ADD_ERROR(m_stStatus);
 		}
 		else
@@ -1774,7 +1775,7 @@ void CMyDlg::OnRealExit()
 		if (!DoSaveDfTasks(stTmp))
 		{
 			m_stStatus.Format("保存文件[%s]失败！", LPCTSTR(stTmp));
-			::MessageBox(m_stStatus,"保存失败");
+			::MessageBox(m_stStatus,"保存失败", MB_ICONERROR);
 		}
 		else
 		{
@@ -2112,7 +2113,7 @@ BOOL CMyDlg::PreTranslateMessage( MSG* pMsg )
 
 void CMyDlg::OnNotDefined()
 {
-	::MessageBox("此功能暂时没有完成\r\n敬请期待！");
+	::MessageBox("此功能暂时没有完成\r\n敬请期待！", "Sorry", MB_ICONINFORMATION);
 }
 
 void CMyDlg::OnTimer(UINT nIDEvent) 
@@ -2378,7 +2379,7 @@ bool CMyDlg::DoTaskCommand( const TaskMsg& tsk )
         stRealCmd = tsk.stCmd;
     }
     if (CheckMsgTypeRemind(tsk.nMsgType) 
-        && ::MessageBox(st, "命令确认", 10, FALSE) != IDOK)
+        && ::MessageBox(st, "命令确认", MB_ICONINFORMATION, 10, FALSE) != IDOK)
     {
         ADD_NORMAL("任务[%s]命令[%s]被取消执行！", tsk.stTitle, tsk.stCmd);
         return true;
@@ -2608,7 +2609,7 @@ void CMyDlg::OnExportCur()
 	book.PrintPreview(_variant_t(false));  
 	if(CoInitialize(NULL)==S_FALSE)   
 	{  
-		::MessageBox(_T("初始化COM支持库失败！"));
+		::MessageBox(_T("初始化COM支持库失败！"), "ERROR", MB_ICONERROR);
 		m_stStatus.Format("导出当前视图数据到文件 [%s] 失败: 初始化COM支持库失败！",cStrFile);
 		UpdateData(FALSE);
 		return;  
@@ -2616,7 +2617,7 @@ void CMyDlg::OnExportCur()
   
 	if(!app.CreateDispatch(_T("Excel.Application"))) //创建IDispatch接口对象   
 	{  
-		::MessageBox(_T("创建IDispatch接口对象失败！"));   
+		::MessageBox(_T("创建IDispatch接口对象失败！"), "失败", MB_ICONERROR);   
 		m_stStatus.Format("导出当前视图数据到文件 [%s] 失败: 创建IDispatch接口对象失败！",cStrFile);
 		UpdateData(FALSE);
 		return;
@@ -2785,7 +2786,7 @@ bool CMyDlg::OnExportAll()
 	book.PrintPreview(_variant_t(false));  
 	if(CoInitialize(NULL)==S_FALSE)   
 	{  
-		::MessageBox(_T("初始化COM支持库失败！"));
+		::MessageBox(_T("初始化COM支持库失败！"), "失败", MB_ICONERROR);
 		m_stStatus.Format("导出所有数据到文件 [%s] 失败: 初始化COM支持库失败！",cStrFile);
 		UpdateData(FALSE);
 		return false;  
@@ -2793,7 +2794,7 @@ bool CMyDlg::OnExportAll()
   
 	if(!app.CreateDispatch(_T("Excel.Application"))) //创建IDispatch接口对象   
 	{  
-		::MessageBox(_T("创建IDispatch接口对象失败！"));   
+		::MessageBox(_T("创建IDispatch接口对象失败！"), "失败", MB_ICONERROR);   
 		m_stStatus.Format("导出所有数据到文件 [%s] 失败: 创建IDispatch接口对象失败！",cStrFile);
 		UpdateData(FALSE);
 		return false;
@@ -2900,7 +2901,7 @@ bool CMyDlg::OnExportAllByDay()
 	book.PrintPreview(_variant_t(false));  
 	if(CoInitialize(NULL)==S_FALSE)   
 	{  
-		::MessageBox(_T("初始化COM支持库失败！"));
+		::MessageBox(_T("初始化COM支持库失败！"), "失败", MB_ICONERROR);
 		m_stStatus.Format("导出所有数据到文件 [%s] 失败: 初始化COM支持库失败！",cStrFile);
 		UpdateData(FALSE);
 		return false;  
@@ -2908,7 +2909,7 @@ bool CMyDlg::OnExportAllByDay()
   
 	if(!app.CreateDispatch(_T("Excel.Application"))) //创建IDispatch接口对象   
 	{  
-		::MessageBox(_T("创建IDispatch接口对象失败！"));   
+		::MessageBox(_T("创建IDispatch接口对象失败！"), "失败", MB_ICONERROR);   
 		m_stStatus.Format("导出所有数据到文件 [%s] 失败: 创建IDispatch接口对象失败！",cStrFile);
 		UpdateData(FALSE);
 		return false;
@@ -3228,7 +3229,7 @@ void CMyDlg::DoRedrawTrayIcon( bool bReset/*=false*/ )
             ::Shell_NotifyIcon(NIM_SETVERSION,&m_tnid);
             if (!::Shell_NotifyIcon(NIM_MODIFY,&m_tnid))		//修改托盘图标
             {
-                ::MessageBox("Shell_NotifyIcon ERROR!");
+                ::MessageBox("Shell_NotifyIcon ERROR!", "失败", MB_ICONERROR);
             }
 		}
 		if(bReset)
@@ -3249,7 +3250,7 @@ void CMyDlg::DoRedrawTrayIcon( bool bReset/*=false*/ )
 		m_tnid.hIcon = IconID[m_nIconIndex];
 		if (!::Shell_NotifyIcon(NIM_MODIFY,&m_tnid))		//修改托盘图标
         {
-            ::MessageBox("Shell_NotifyIcon ERROR!");
+            ::MessageBox("Shell_NotifyIcon ERROR!", "失败", MB_ICONERROR);
         }
 	}
 	//bIsFirst = false;

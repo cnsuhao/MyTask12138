@@ -68,7 +68,10 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME1          ICON                    "res\\idr_main.ico"
 IDR_MAINFRAME           ICON                    "res\\我的任务.ico"
-IDR_MAINFRAME2          ICON                    "res\\ico00001.ico"
+IDI_ICON_ERROR          ICON                    "res\\webico\\Error.ico"
+IDI_ICON_INFO           ICON                    "res\\webico\\info.ico"
+IDI_ICON_WARNING        ICON                    "res\\webico\\Warning.ico"
+IDR_MAINFRAME2          ICON                    "res\\webico\\icon1.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -239,9 +242,10 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "警告"
 FONT 14, "幼圆", 0, 0, 0x1
 BEGIN
-    CONTROL         "确定",ID_MESDLG_OK,"Button",BS_OWNERDRAW | WS_GROUP | WS_TABSTOP,43,56,46,16
-    CONTROL         "取消",ID_MESDLG_CANCEL,"Button",BS_OWNERDRAW | WS_GROUP | WS_TABSTOP,99,56,46,16
-    EDITTEXT        IDC_EDIT_MSGTEXT,7,17,174,35,ES_MULTILINE | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    CONTROL         "确定",ID_MESDLG_OK,"Button",BS_OWNERDRAW | WS_GROUP | WS_TABSTOP,41,56,46,16
+    CONTROL         "取消",ID_MESDLG_CANCEL,"Button",BS_OWNERDRAW | WS_GROUP | WS_TABSTOP,100,56,46,16
+    EDITTEXT        IDC_EDIT_MSGTEXT,34,17,150,35,ES_MULTILINE | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    ICON            IDR_MAINFRAME,IDC_MSGBOX_MY_ICON,14,14,13,13,SS_NOTIFY,WS_EX_TRANSPARENT
 END
 
 IDD_DIALOG_DF_TASK_EDIT DIALOGEX 0, 0, 219, 216
@@ -406,7 +410,7 @@ BEGIN
     IDD_DIALOG_MESSAGE_DLG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 181
+        RIGHTMARGIN, 184
         TOPMARGIN, 7
         BOTTOMMARGIN, 80
     END

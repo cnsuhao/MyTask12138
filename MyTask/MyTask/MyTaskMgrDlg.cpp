@@ -127,7 +127,7 @@ void CMyTaskMgrDlg::OnEditDfModify()
 	}
 	if (!bFound)
 	{
-		::MessageBox("★没有选中要编辑的数据！","未选中任务",3);
+		::MessageBox("★没有选中要编辑的数据！", "未选中任务", MB_ICONINFORMATION, 3);
 		return;
 	}
 	
@@ -145,7 +145,7 @@ void CMyTaskMgrDlg::OnEditDfModify()
 			{
                 CPubData::gArrDfTasks[i] = *(dlg.GetTaskPointer());
 				stTitles += " 成功！";
-				::MessageBox(stTitles, "编辑成功",3);
+				::MessageBox(stTitles, "编辑成功", MB_ICONINFORMATION, 3);
                 ADD_NORMAL("%s",stTitles);
 				CPubData::gArrDfTasks.SetChange(true);
                 SetDataToCtrl(CPubData::gArrDfTasks[i], i, FALSE);
@@ -174,10 +174,10 @@ void CMyTaskMgrDlg::OnEditDfDel()
 	}
 	if (!bFound)
 	{
-		::MessageBox("★没有选中要删除的数据！","未选中任务", 3);
+		::MessageBox("★没有选中要删除的数据！", "未选中任务", MB_ICONINFORMATION, 3);
 		return;
 	}
-	if (::MessageBox("确认删除所有所选的任务？","确认删除", 10, FALSE) == IDOK)
+	if (::MessageBox("确认删除所有所选的任务？", "确认删除", MB_ICONINFORMATION, 10, FALSE) == IDOK)
 	{
 		while (1)
 		{
@@ -202,7 +202,7 @@ void CMyTaskMgrDlg::OnEditDfDel()
 				break;
 		}
 		stTitles += " 成功！";
-		::MessageBox(stTitles, "删除成功", 3);
+		::MessageBox(stTitles, "删除成功", MB_ICONINFORMATION, 3);
         ADD_NORMAL("%s",stTitles);
 		UpdateData(FALSE);
 	}
@@ -282,7 +282,7 @@ void CMyTaskMgrDlg::OnBnClickedEditDfExport()
     CString stErrMsg;
     if (!GetExportFileName(FT_XML, stFileName, stErrMsg, this))
     {
-        ::MessageBox(stErrMsg);
+        ::MessageBox(stErrMsg, "获取文件名失败", MB_ICONERROR);
         return;
     }
 
@@ -309,7 +309,7 @@ void CMyTaskMgrDlg::OnBnClickedEditDfExport()
     if (pTopEles == NULL)
     {
         ADD_ERROR("new pTopEles Failed!");
-        ::MessageBox("new pTopEles Failed!");
+        ::MessageBox("new pTopEles Failed!", "失败", MB_ICONERROR);
         return;
     }
     pTopEles->SetAttribute("type", "所有任务");
@@ -323,7 +323,7 @@ void CMyTaskMgrDlg::OnBnClickedEditDfExport()
         if (pElmTask == NULL)
         {
             ADD_ERROR("new pElmTask Failed!");
-            ::MessageBox("new pElmTask Failed!");
+            ::MessageBox("new pElmTask Failed!", "失败", MB_ICONERROR);
             return;
         }
         pElmTask->SetAttribute("type", "XXXXX");
@@ -335,7 +335,7 @@ void CMyTaskMgrDlg::OnBnClickedEditDfExport()
             if (pElmField == NULL)
             {
                 ADD_ERROR("new pElmField Failed!");
-                ::MessageBox("new pElmField Failed!");
+                ::MessageBox("new pElmField Failed!", "失败", MB_ICONERROR);
                 return;
             }
             GetDefaultTaskDataByCol(szTemp, CPubData::gArrDfTasks[iRow], iCol);
@@ -343,7 +343,7 @@ void CMyTaskMgrDlg::OnBnClickedEditDfExport()
             if (pText == NULL)
             {
                 ADD_ERROR("new pText Failed!");
-                ::MessageBox("new pText Failed!");
+                ::MessageBox("new pText Failed!", "失败", MB_ICONERROR);
                 return;
             }
             pElmField->InsertEndChild(*pText);
@@ -359,7 +359,7 @@ void CMyTaskMgrDlg::OnBnClickedEditDfExport()
     doc.SaveFile();
 
     stErrMsg.Format("导出[%d]条数据到[%s]成功！", nrows, LPCTSTR(stFileName));
-    ::MessageBox(stErrMsg, "导出成功", 5, TRUE);
+    ::MessageBox(stErrMsg, "导出成功", MB_ICONINFORMATION, 5, TRUE);
 }
 
 void CMyTaskMgrDlg::OnBnClickedEditDfImport()
@@ -370,7 +370,7 @@ void CMyTaskMgrDlg::OnBnClickedEditDfImport()
     CString stErrMsg;
     if (!GetImportFileName(FT_XML, stFileName, stErrMsg, this))
     {
-        ::MessageBox(stErrMsg);
+        ::MessageBox(stErrMsg, "获取文件名失败", MB_ICONERROR);
         return;
     }
 
@@ -378,7 +378,7 @@ void CMyTaskMgrDlg::OnBnClickedEditDfImport()
     if (!doc.LoadFile())
     {
         //MessageBox("Open File Error!");
-        ::MessageBox("打开文件失败！", "打开文件失败");
+        ::MessageBox("打开文件失败！", "打开文件失败", MB_ICONERROR);
         return;
     }
     TiXmlNode* pNode = NULL;
@@ -388,7 +388,7 @@ void CMyTaskMgrDlg::OnBnClickedEditDfImport()
     {
         if (!CPubData::ParseXmlDataNodeAsDefaultTask(pNode))
         {
-            ::MessageBox("ParseXmlDataNodeAsDefaultTask ERROR!");
+            ::MessageBox("ParseXmlDataNodeAsDefaultTask ERROR!", "失败", MB_ICONERROR);
             break;
         }
         pNode = pNode->NextSibling();

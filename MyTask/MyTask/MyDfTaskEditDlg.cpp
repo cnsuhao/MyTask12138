@@ -82,25 +82,25 @@ void CMyDfTaskEditDlg::OnOkEditDf()
 	UpdateData();
 	if (m_stTitle.IsEmpty())
 	{
-		::MessageBox("请输入标题！", "输入错误",3);
+		::MessageBox("请输入标题！", "输入错误", MB_ICONWARNING, 3);
 		return;
 	}
     if (m_stHour.IsEmpty() || m_stMin.IsEmpty())
     {
-        ::MessageBox("请输入提醒时间！", "输入错误", 3);
+        ::MessageBox("请输入提醒时间！", "输入错误", MB_ICONWARNING, 3);
         GetDlgItem(IDC_EDIT_MINS)->SetFocus();
         return;
     }
     if (m_bIsOperSet && m_stCmd.IsEmpty())
     {
-        ::MessageBox("请输入操作的命令！", "输入错误",3);
+        ::MessageBox("请输入操作的命令！", "输入错误", MB_ICONWARNING, 3);
         GetDlgItem(IDC_EDIT_CMD)->SetFocus();
         return;
     }
     if (m_nDateType == RMD_TT_EXACT_TIME
         && !CheckDate(m_stCertainDay))
     {
-        ::MessageBox("请输入正确的日期！", "输入错误", 3);
+        ::MessageBox("请输入正确的日期！", "输入错误", MB_ICONWARNING, 3);
         GetDlgItem(IDC_EDIT_C_DAY)->SetFocus();
         return;
     }

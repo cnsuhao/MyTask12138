@@ -120,7 +120,7 @@ void CSetDlg::OnButtonDelM()
 		CString st;
 		int index = m_lstMusicName.GetCurSel();
 		st.Format("确认要删除音乐文件[%s]吗？",CPubData::GetPureName(CPubData::setMsg.GetMusicAt(index)));
-		if(IDOK==::MessageBox(LPCTSTR(st), "确认删除", 10, FALSE))
+		if(IDOK==::MessageBox(LPCTSTR(st), "确认删除", MB_ICONINFORMATION, 10, FALSE))
 		{
 			m_lstMusicName.DeleteString(index);
 			CPubData::setMsg.RemoveMusicAt(index);
@@ -133,7 +133,7 @@ void CSetDlg::OnButtonPlayM()
 	// TODO: Add your control notification handler code here
 	if (m_lstMusicName.GetCurSel() < 0)
 	{
-		::MessageBox("请先选择要播放的音乐！","",3);
+		::MessageBox("请先选择要播放的音乐！", "", MB_ICONWARNING, 3);
 		return;
 	}
 
