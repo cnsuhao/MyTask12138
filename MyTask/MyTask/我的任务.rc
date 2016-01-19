@@ -71,7 +71,7 @@ IDR_MAINFRAME           ICON                    "res\\我的任务.ico"
 IDI_ICON_ERROR          ICON                    "res\\webico\\Error.ico"
 IDI_ICON_INFO           ICON                    "res\\webico\\info.ico"
 IDI_ICON_WARNING        ICON                    "res\\webico\\Warning.ico"
-IDR_MAINFRAME2          ICON                    "res\\webico\\icon1.ico"
+IDR_MAINFRAME2          ICON                    "res\\icon_null.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
