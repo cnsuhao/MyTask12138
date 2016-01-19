@@ -17,7 +17,6 @@
 #define IDR_MENU_MAIN                   129
 #define IDR_MAINFRAME1                  129
 #define IDR_MAINFRAME                   130
-#define IDR_MAINFRAME2                  131
 #define IDR_TOOLBAR_MAIN                132
 #define IDR_MENU_LIST_POP               136
 #define IDD_DIALOG_MSG                  137
@@ -41,6 +40,11 @@
 #define IDD_DIALOG_TASKS_MGR            190
 #define IDD_DIALOG_VERSION_SHOW         191
 #define IDD_DIALOG_TIMEOUT_TASK         192
+#define IDI_ICON_ERROR                  194
+#define IDI_ICON_INFO                   195
+#define IDI_ICON_WARNING                196
+#define IDI_ICON1                       197
+#define IDR_MAINFRAME2                  197
 #define IDC_LIST_TASK_SHOW              1000
 #define IDC_STATIC_STATUS               1001
 #define IDC_LIST_TASK_SHOW2             1002
@@ -164,6 +168,7 @@
 #define IDC_LIST_VERSION                1096
 #define IDC_COMBO_VER_LIST              1098
 #define IDC_LIST_TIMEOUT_TASK           1099
+#define IDC_MSGBOX_MY_ICON              1100
 #define ID_MENU_OPEN                    32772
 #define ID_BTN_TOOL_ADD                 32773
 #define ID_BTN_TOOL_SAVE                32774
@@ -232,9 +237,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        193
+#define _APS_NEXT_RESOURCE_VALUE        198
 #define _APS_NEXT_COMMAND_VALUE         32842
-#define _APS_NEXT_CONTROL_VALUE         1100
+#define _APS_NEXT_CONTROL_VALUE         1101
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

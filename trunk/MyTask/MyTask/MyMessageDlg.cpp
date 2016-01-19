@@ -28,13 +28,19 @@ CMyMessageDlg::CMyMessageDlg(CWnd* pParent /*=NULL*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-CMyMessageDlg::CMyMessageDlg( const CString& text, const CString& title/*="御少"*/, int closeSeconds/*=5*/,BOOL bDefaultOnOK/*=TRUE*/, CWnd* pParent /*= NULL*/ )
+CMyMessageDlg::CMyMessageDlg( const CString& text, 
+                             const CString& title/*="御少"*/, 
+                             int closeSeconds/*=5*/,
+                             BOOL bDefaultOnOK/*=TRUE*/, 
+                             UINT uType /*= MB_ICONINFORMATION*/, 
+                             CWnd* pParent /*= NULL*/ )
     : CDialog(CMyMessageDlg::IDD, pParent)
     , m_nCloseTime(closeSeconds)
     , m_stTitle(title)
     , m_stMsgText(text)
     , m_bIsDefaultOK(bDefaultOnOK)
     , m_nTimeLeft(closeSeconds)
+    , m_uType(uType)
 {
 	m_stTitle += " - " + CPubData::GetPureModuleName();
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -42,12 +48,13 @@ CMyMessageDlg::CMyMessageDlg( const CString& text, const CString& title/*="御少"
 
 void CMyMessageDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CMyMessageDlg)
-	DDX_Control(pDX, ID_MESDLG_OK, m_btnOK);
-	DDX_Control(pDX, ID_MESDLG_CANCEL, m_btnCancel);
-	DDX_Text(pDX, IDC_EDIT_MSGTEXT, m_stMsgText);
-	//}}AFX_DATA_MAP
+    CDialog::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CMyMessageDlg)
+    DDX_Control(pDX, ID_MESDLG_OK, m_btnOK);
+    DDX_Control(pDX, ID_MESDLG_CANCEL, m_btnCancel);
+    DDX_Text(pDX, IDC_EDIT_MSGTEXT, m_stMsgText);
+    DDX_Control(pDX, IDC_MSGBOX_MY_ICON, m_objIco);
+    //}}AFX_DATA_MAP
 }
 
 
@@ -87,6 +94,21 @@ BOOL CMyMessageDlg::OnInitDialog()
 		st.Format("函��(%u)",m_nTimeLeft);
 		m_btnCancel.SetWindowText(LPCTSTR(st));
 	}
+    
+    switch (m_uType)
+    {
+    case MB_ICONERROR:
+        m_objIco.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ERROR));
+        break;
+    case MB_ICONWARNING:
+        m_objIco.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_WARNING));
+        break;
+    case MB_ICONINFORMATION:
+    default:
+        m_objIco.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_INFO));
+        break;
+    }
+
 	UpdateData(FALSE);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -156,7 +178,6 @@ void CMyMessageDlg::OnCancel()
 
 int CMyMessageDlg::DoModal()
 {
-
 	return CDialog::DoModal();
 }
 

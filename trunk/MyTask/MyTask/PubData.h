@@ -19,7 +19,13 @@ class TiXmlNode;
 #define FILE_NAME_SET "userconfig.cfg"
 #define FILE_NAME_DF_TASK "default.dat"
 
-int MessageBox( LPCSTR lpText, LPCSTR lpCaption="", UINT nSeconds=10, BOOL bDefaultOnOK=TRUE);
+int MessageBox(LPCSTR lpText,          // 消息内容
+               LPCSTR lpCaption="",     // 消息标题
+               UINT uType = MB_ICONINFORMATION,  // 图标类型
+                   // 目前仅支持MB_ICONINFORMATION, MB_ICONWARNING, MB_ICONERROR
+               UINT nSeconds=10,        // 自动消失时间
+               BOOL bDefaultOnOK=TRUE  // 默认按钮是否是"确定"
+              );
 bool CheckDate( const char* stDay, time_t * ptiDate = NULL);
 bool GetExportFileName(TagFileType type_, CString& stFileName, CString& stErrMsg, CDialog* pDlg = NULL);
 bool GetImportFileName(TagFileType type_, CString& stFileName, CString& stErrMsg, CDialog* pDlg = NULL);

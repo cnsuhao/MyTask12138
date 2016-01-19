@@ -309,13 +309,13 @@ bool CMsgEditDlg::CheckData()
 	int nEnd = atoi(LPCTSTR(m_stEndHour))*60+atoi(LPCTSTR(m_stEndMin));
 	if (nStart > nEnd)
 	{
-		::MessageBox("结束时间不能比起始时间早","输入错误",3);
+		::MessageBox("结束时间不能比起始时间早", "输入错误", MB_ICONINFORMATION, 3);
 		return false;
 	}
 
 	if (m_stTitle.GetLength() == 0)
 	{
-		::MessageBox("标题不能为空！","输入错误",3);
+		::MessageBox("标题不能为空！", "输入错误", MB_ICONWARNING, 3);
 		return false;
 	}
 

@@ -134,7 +134,8 @@ bool CPubData::InitData()
 			HWND hWndMainWindow = ::FindWindow(NULL, MAIN_DLG_NAME); //   寻找先前实例的主窗口
 			if(hWndMainWindow==NULL)
 			{
-				::MessageBox("NULL");
+				::MessageBox("信号量异常！", "异常", MB_ICONERROR);
+                exit(0);
 			}
 			::SendMessage(hWndMainWindow, MY_MSG_SHOW, NULL, NULL);//向已经存在的窗口发消息
 			//::SendMessage(hWndMainWindow, WM_COPYDATA, NULL, NULL);
@@ -144,12 +145,12 @@ bool CPubData::InitData()
 		pRmdLock = new CSingleLock(psemObjRemind, FALSE);
 		if (NULL == pRmdLock)
 		{
-			::MessageBox("初始化提示互斥量失败！", "提示1");
+			::MessageBox("初始化提示互斥量失败！", "提示1", MB_ICONERROR);
 			exit(0);
 		}
 		if (!pRmdLock->Lock(200))
 		{
-			::MessageBox("初始化提示互斥量失败！", "提示2");
+			::MessageBox("初始化提示互斥量失败！", "提示2", MB_ICONERROR);
 			exit(0);
 		}
 		pRmdLock->Unlock();
@@ -230,9 +231,11 @@ CString CPubData::GetDataFileName( const char*stName )
 	if(dwAttr==-1||(dwAttr&FILE_ATTRIBUTE_DIRECTORY)==0)//目录不存在 
 	{ 
 		if (!CreateDirectory(strPath,NULL)) 
-		{ 
-			::MessageBox( "不能创建目录 "); 
-			CString stTmp = ".\\";
+		{
+            CString stTmp;
+            stTmp.Format("不能创建目录[%s]", LPCTSTR(strPath));
+			::MessageBox(stTmp, "创建目录失败", MB_ICONERROR); 
+			stTmp = ".\\";
 			return stTmp + stName; 
 		} 
 	}
@@ -251,8 +254,10 @@ CString CPubData::GetLogFileName( const char*stName )
 	{ 
 		if (!CreateDirectory(strPath,NULL)) 
 		{ 
-			::MessageBox( "不能创建目录 "); 
-			CString stTmp = ".\\";
+            CString stTmp;
+            stTmp.Format("不能创建目录[%s]", LPCTSTR(strPath));
+            ::MessageBox(stTmp, "创建目录失败", MB_ICONERROR); 
+            stTmp = ".\\";
 			return stTmp + stName; 
 		} 
 	}
@@ -310,10 +315,15 @@ CString CPubData::GetPureModuleName()
 	return GetPureName(strPath,FALSE);
 }
 
-int MessageBox( LPCSTR lpText, LPCSTR lpCaption/*=""*/, UINT nSeconds/*=10*/, BOOL bDefaultOnOK/*=TRUE*/)
+int MessageBox( LPCSTR lpText, 
+               LPCSTR lpCaption/*=""*/,
+               UINT uType /*= MB_ICONINFORMATION */,
+               UINT nSeconds/*=10*/, 
+               BOOL bDefaultOnOK/*=TRUE*/
+              )
 {
-	CMyMessageDlg dlg(lpText, lpCaption, nSeconds, bDefaultOnOK, NULL);
-	return dlg.DoModal();
+    CMyMessageDlg dlg(lpText, lpCaption, nSeconds, bDefaultOnOK, uType, NULL);
+    return dlg.DoModal();
 }
 
 bool CheckDate( const char* stDay, time_t * ptiDate /* = NULL */)
@@ -442,8 +452,8 @@ bool GetExportFileName( TagFileType type_, CString& stFileName, CString& stErrMs
         }
         else
         {
-            stErrMsg.Format("文件 [%s] 已存在，删除原文件失败！",cStrFile);
-            ::MessageBox(stErrMsg);
+            stErrMsg.Format("文件 [%s] 已存在，且删除原文件失败！",cStrFile);
+            ::MessageBox(stErrMsg, "删除文件失败！", MB_ICONERROR);
             stErrMsg.Format("导出所有数据到文件 [%s] 失败: 文件已存在且无法覆盖！",cStrFile);
             return false;
         }
