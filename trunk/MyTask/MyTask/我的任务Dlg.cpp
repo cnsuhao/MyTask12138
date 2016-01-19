@@ -1751,8 +1751,8 @@ void CMyDlg::OnRealExit()
 		}
 		if (stTmp.IsEmpty())
 		{
-			::MessageBox("没有打开文件！\r\n也没有默认文件！所以不会进行保存！\n请先指定要保存的文件或者在设置中指定默认文件！"
-                "", MB_ICONWARNING);
+			::MessageBox("没有打开文件！\r\n也没有默认文件！所以不会进行保存！\n请先指定要保存的文件或者在设置中指定默认文件！",
+                "请先选择保存方式", MB_ICONWARNING);
 			return;
 		}
 		else if (!DoSave(stTmp))
