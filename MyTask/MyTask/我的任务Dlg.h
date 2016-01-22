@@ -198,6 +198,8 @@ protected:
 	afx_msg void OnDblclkListTaskShow(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnStaticMyIcon();
 	afx_msg void OnMainDfTasks();
+    afx_msg void OnAbout();
+    afx_msg void OnMenuMainIniEdit();
     virtual void WinHelp( DWORD_PTR dwData, UINT nCmd = HELP_CONTEXT );
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
@@ -217,10 +219,8 @@ protected:
     bool DoTaskCommand( const TaskMsg& tsk );
     bool SortBySubItemAndRedraw( int iSubItem );
     void SetColumnSortFlag( int m_iSortIndex, TagSortFlag flag );
-public:
-    afx_msg void OnAbout();
-public:
-    afx_msg void OnMenuMainIniEdit();
+    void GetWeatherInfo();
+    void ParseWeatherDataFromHtml( const CString& html );
 };
 
 //{{AFX_INSERT_LOCATION}}

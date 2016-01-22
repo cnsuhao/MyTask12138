@@ -704,6 +704,8 @@ void CSetMsg::SetTrayTipType( int type )
 }
 
 int TConfig::gLogLevel = 0;
+int TConfig::gWeatherShow = 0;
+CString TConfig::gstWeatherCode;
 CMap<CString, LPCTSTR, CString, LPCTSTR> TConfig::gMapCmd;
 
 CString TConfig::GetIniName(LPCTSTR Name)
@@ -750,6 +752,37 @@ void TConfig::ReadAllConfig()
         }
         gMapCmd.SetAt(stName, stValue);
         ADD_NORMAL("读取配置[Cmd][%s=[%s]]成功！",stName, stValue);
+    }
+
+    // 读取天气城市
+    {
+        gWeatherShow = GetPrivateProfileInt("WeatherCity", "WeatherShow", 
+            0, LPCTSTR(stFileName));
+        ADD_NORMAL("读取配置WeatherShow=[%d]", gWeatherShow);
+
+        if (gWeatherShow != 0)
+        {
+            char stCityName[32]={0}, stCityCode[32] = {0};
+
+            // 读取城市名称
+            (void)GetPrivateProfileString("WeatherCity", "CityName", 
+                "", stCityName, sizeof(stCityName), LPCTSTR(stFileName));
+            if (strlen(stCityName) == 0)
+            {
+                ADD_ERROR("读取配置[CityName]失败！");
+                return;
+            }
+
+            // 读取城市代码
+            CString stCityCodeIniName = CPubData::GetDataFileName("CityCode.ini");
+            (void)GetPrivateProfileString("CityCode", stCityName, 
+                "", stCityCode, sizeof(stCityCode),
+                LPCTSTR(stCityCodeIniName));
+
+            gstWeatherCode = stCityCode;
+            ADD_NORMAL("读取配置WeatherCity=[%s],CityCode=[%s]",
+                stCityName, stCityCode);
+        }
     }
 }
 

@@ -519,10 +519,15 @@ class TConfig
 {
 public:
     static int gLogLevel;
+    static int gWeatherShow;
+    static CString gstWeatherCode;
     static CMap<CString, LPCTSTR, CString, LPCTSTR> gMapCmd;
 
     static void SetLogLevel(int level = 0)  { gLogLevel = level; }
     static int  GetLogLevel()  { return gLogLevel; }
+
+    static int  GetWeatherShow()  { return gWeatherShow; }
+    static const CString& GetWeatherCityCode() { return gstWeatherCode; }
 
     static void ReadAllConfig();
     static CString GetIniName(LPCTSTR Name);
