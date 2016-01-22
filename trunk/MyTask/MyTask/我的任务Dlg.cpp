@@ -23,6 +23,7 @@
 #include "tinyxml/tinyxml.h"
 #include "VersionShowDlg.h"
 #include "TimeoutTaskDlg.h"
+#include <afxinet.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -273,6 +274,11 @@ BOOL CMyDlg::OnInitDialog()
     // 读取配置文件
     TConfig::ReadAllConfig();
     m_stFileType = CPubData::GetFileTypeName();
+    if (TConfig::GetWeatherShow() != 0)
+    {
+        GetWeatherInfo();
+    }
+
     if (CPubData::setMsg.IsLogViewerSet())
     {
         m_stOpenLogCmd = CPubData::setMsg.GetLogViewer();
@@ -3816,4 +3822,33 @@ void CMyDlg::OnMenuMainIniEdit()
             ::ShellExecute(NULL,"open", LPCTSTR(m_stOpenLogCmd),LPCTSTR(stLogFile),LPCTSTR(stLogFile),SW_SHOWDEFAULT);
         }
     }
+}
+
+void CMyDlg::GetWeatherInfo()
+{
+    CInternetSession httpSession;
+    CString stUrl;
+    //stUrl.Format("http://www.weather.com.cn/adat/cityinfo/%s.html", LPCTSTR(TConfig::GetWeatherCityCode()));
+    stUrl.Format("http://www.weather.com.cn/data/sk/%s.html", LPCTSTR(TConfig::GetWeatherCityCode()));
+
+    CInternetFile* htmlFile = (CInternetFile*) httpSession.OpenURL(stUrl);
+    CString content;
+    CString html;
+    if (htmlFile != NULL)
+    {
+        while (htmlFile->ReadString(content))
+        {
+            html += content + "";
+        }
+    }
+
+    ParseWeatherDataFromHtml(html);
+    htmlFile->Close();
+    httpSession.Close();
+}
+
+void CMyDlg::ParseWeatherDataFromHtml( const CString& html )
+{
+    char * stParsedHtml = CPubData::UTF8_To_GB2312(LPCTSTR(html));
+    ::MessageBox(stParsedHtml, "天气信息", MB_ICONINFORMATION, 20);
 }

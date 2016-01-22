@@ -782,11 +782,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\webico\icon1.ico"
+				>
+			</File>
+			<File
 				RelativePath="res\icon1.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\webico\icon1.ico"
+				RelativePath=".\res\icon_null.ico"
 				>
 			</File>
 			<File
@@ -850,6 +854,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\dat\CityCode.ini"
+			>
+		</File>
 		<File
 			RelativePath="ReadMe.txt"
 			>

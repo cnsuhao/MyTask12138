@@ -67,6 +67,8 @@ public:
 	static CString GetPureName( const CString& m_stLogViewer, BOOL bIsExt = FALSE );
 	static CString GetPureModuleName();
     static bool ParseXmlDataNodeAsDefaultTask(TiXmlNode* pNode);
+    static char* UTF8_To_GB2312(const char* utf8);
+    // data
     static TaskMsg gTask;
     static CString stFieldName;
     static CSetMsg setMsg;
