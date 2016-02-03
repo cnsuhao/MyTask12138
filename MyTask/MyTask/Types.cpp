@@ -703,11 +703,6 @@ void CSetMsg::SetTrayTipType( int type )
 		m_nTrayTipType = type;
 }
 
-int TConfig::gLogLevel = 0;
-int TConfig::gWeatherShow = 0;
-CString TConfig::gstWeatherCode;
-CMap<CString, LPCTSTR, CString, LPCTSTR> TConfig::gMapCmd;
-
 CString TConfig::GetIniName(LPCTSTR Name)
 {
     static bool bFirst = true;
@@ -728,10 +723,15 @@ CString TConfig::GetIniName(LPCTSTR Name)
 void TConfig::ReadAllConfig()
 {
     CString stFileName = GetIniName("task.ini");
-    gMapCmd.InitHashTable(32);
+    GetImpl().MapCmd.InitHashTable(32);
 
-    gLogLevel = GetPrivateProfileInt("LOG", "LogLevel", 0, LPCTSTR(stFileName));
-    ADD_NORMAL("∂¡»°≈‰÷√LogLevel=[%d]", gLogLevel);
+    GetImpl().LogLevel = GetPrivateProfileInt("LOG", "LogLevel", 0, LPCTSTR(stFileName));
+    ADD_NORMAL("∂¡»°≈‰÷√LogLevel=[%d]", GetImpl().LogLevel);
+
+    GetImpl().IsTaskTitleModifiable =
+        (GetPrivateProfileInt("Common", "TaskTitleModifiable", 0, LPCTSTR(stFileName))==1 ? true : false);
+    ADD_NORMAL("∂¡»°≈‰÷√TaskTitleModifiable=[%s]", 
+        GetImpl().IsTaskTitleModifiable ? "true" : "false");
 
     int nCount = GetPrivateProfileInt("Cmd", "Count", 0, LPCTSTR(stFileName));
     CString stTName, stTValue;
@@ -750,17 +750,17 @@ void TConfig::ReadAllConfig()
                 stTName, stName, stTValue, stValue);
             continue;
         }
-        gMapCmd.SetAt(stName, stValue);
+        GetImpl().MapCmd.SetAt(stName, stValue);
         ADD_NORMAL("∂¡»°≈‰÷√[Cmd][%s=[%s]]≥…π¶£°",stName, stValue);
     }
 
     // ∂¡»°ÃÏ∆¯≥« –
     {
-        gWeatherShow = GetPrivateProfileInt("WeatherCity", "WeatherShow", 
+        GetImpl().WeatherShow = GetPrivateProfileInt("WeatherCity", "WeatherShow", 
             0, LPCTSTR(stFileName));
-        ADD_NORMAL("∂¡»°≈‰÷√WeatherShow=[%d]", gWeatherShow);
+        ADD_NORMAL("∂¡»°≈‰÷√WeatherShow=[%d]", GetImpl().WeatherShow);
 
-        if (gWeatherShow != 0)
+        if (GetImpl().WeatherShow != 0)
         {
             char stCityName[32]={0}, stCityCode[32] = {0};
 
@@ -779,7 +779,7 @@ void TConfig::ReadAllConfig()
                 "", stCityCode, sizeof(stCityCode),
                 LPCTSTR(stCityCodeIniName));
 
-            gstWeatherCode = stCityCode;
+            GetImpl().WeatherCode = stCityCode;
             ADD_NORMAL("∂¡»°≈‰÷√WeatherCity=[%s],CityCode=[%s]",
                 stCityName, stCityCode);
         }
@@ -789,7 +789,7 @@ void TConfig::ReadAllConfig()
 CString TConfig::GetCmdByName( LPCTSTR stName )
 {
     CString stValue;
-    if(gMapCmd.Lookup(stName, stValue))
+    if(GetImpl().MapCmd.Lookup(stName, stValue))
     {
         return stValue;
     }
@@ -797,6 +797,12 @@ CString TConfig::GetCmdByName( LPCTSTR stName )
     {
         return "";
     }
+}
+
+TConfig::TConfigImpl& TConfig::GetImpl()
+{
+    static TConfigImpl _impl;
+    return _impl;
 }
 
 LPCTSTR GetNormalTaskDataByCol( CString& sBuf, const TaskMsg& tsk, int iCol )
@@ -1008,4 +1014,16 @@ void GetRmdTypeFromString(TaskMsg& tsk, const char* st)
             }
         }
     }
+}
+
+TConfig::TConfigImpl::TConfigImpl()
+{
+    LogLevel = 0;
+    IsTaskTitleModifiable = false;
+    WeatherShow = 0;
+}
+
+TConfig::TConfigImpl::~TConfigImpl()
+{
+
 }

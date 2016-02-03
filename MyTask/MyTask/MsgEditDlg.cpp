@@ -5,6 +5,7 @@
 #include "MyTask.h"
 #include "MsgEditDlg.h"
 #include "PubData.h"
+#include "Types.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -284,7 +285,14 @@ void CMsgEditDlg::SetShow()
 	{
 		st.Format("ÐÞ¸ÄÌáÐÑ - %s", m_myTask.stTitle);
 		SetWindowText(LPCTSTR(st));
-		((CEdit*)GetDlgItem(IDC_EDIT_TITLE))->SetReadOnly(TRUE);
+        if (TConfig::IsTaskTitleModifiable())
+        {
+            ((CEdit*)GetDlgItem(IDC_EDIT_TITLE))->SetReadOnly(FALSE);
+        }
+        else
+        {
+            ((CEdit*)GetDlgItem(IDC_EDIT_TITLE))->SetReadOnly(TRUE);
+        }
 		m_bDateEdit = true;
 	}
 	else if (MDT_SHOW == m_nOPType)

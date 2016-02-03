@@ -158,11 +158,11 @@ BOOL CMyDfTaskEditDlg::OnInitDialog()
 		m_lstMonth.AddString(st);
 	}
 
-    POSITION pos = TConfig::gMapCmd.GetStartPosition();
+    POSITION pos = TConfig::GetCmds().GetStartPosition();
     CString strKey,strValue;
     while(pos)
     {
-        TConfig::gMapCmd.GetNextAssoc(pos,strKey,strValue);
+        TConfig::GetCmds().GetNextAssoc(pos,strKey,strValue);
         m_ctrlCmdList.AddString(strKey);
         ADD_DEBUG("添加默认命令[%s=[%s]]成功！", strKey,strValue);
     }
