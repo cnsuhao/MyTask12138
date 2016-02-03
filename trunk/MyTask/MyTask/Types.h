@@ -518,22 +518,34 @@ private:
 class TConfig
 {
 public:
-    static int gLogLevel;
-    static int gWeatherShow;
-    static CString gstWeatherCode;
-    static CMap<CString, LPCTSTR, CString, LPCTSTR> gMapCmd;
+    typedef CMap<CString, LPCTSTR, CString, LPCTSTR> CmdMapType;
+    class TConfigImpl
+    {
+    public:
+        friend class TConfig;
+    private:
+        int LogLevel;
+        CmdMapType MapCmd;
+        bool IsTaskTitleModifiable;
+        int WeatherShow;
+        CString WeatherCode;
+        TConfigImpl();
+        ~TConfigImpl();
+    };
 
-    static void SetLogLevel(int level = 0)  { gLogLevel = level; }
-    static int  GetLogLevel()  { return gLogLevel; }
-
-    static int  GetWeatherShow()  { return gWeatherShow; }
-    static const CString& GetWeatherCityCode() { return gstWeatherCode; }
-
+    static TConfigImpl& GetImpl();
     static void ReadAllConfig();
     static CString GetIniName(LPCTSTR Name);
 
+    static void SetLogLevel(int level = 0)  { GetImpl().LogLevel = level; }
+    static int  GetLogLevel()  { return GetImpl().LogLevel; }
+    static bool IsTaskTitleModifiable() { return GetImpl().IsTaskTitleModifiable; }
+    static int  GetWeatherShow()  { return GetImpl().WeatherShow; }
+    static const CString& GetWeatherCityCode() { return GetImpl().WeatherCode; }
+
     static int AddCmd(LPCTSTR stName, LPCTSTR stValue);
-    static int GetCmdCount() { return gMapCmd.GetCount(); }
+    static int GetCmdCount() { return GetImpl().MapCmd.GetCount(); }
+    static CmdMapType& GetCmds() { return GetImpl().MapCmd; }
     static CString GetCmdByName(LPCTSTR stName);
 };
 
