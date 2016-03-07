@@ -7,6 +7,7 @@
 #include "MyLog.h"
 #include "Types.h"
 #include "PubData.h"
+#include <iostream>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -96,6 +97,7 @@ bool CMyLog::Init( CString stName/*=""*/ )
 			break;
 		default:
 			m_stFileName.Empty();
+            stTmp = "default.log";
 			break;
 		}
 		m_stFileName = CPubData::GetLogFileName(LPCTSTR(stTmp));
@@ -105,15 +107,21 @@ bool CMyLog::Init( CString stName/*=""*/ )
 		m_stFileName = CPubData::GetLogFileName(LPCTSTR(stName));
 	}
 
-	fout.open(LPCTSTR(m_stFileName), ios::app);
-	if(fout.is_open())
+    // Thanks, http://blog.csdn.net/augusdi/article/details/8467492
+    (void)setlocale(LC_ALL,"Chinese-simplified");
+
+    fout.open(LPCTSTR(m_stFileName), ios::app);
+	if(fout)
 	{
 		m_bInited = true;
 		return true;
 	}
 	else
 	{
-		m_bInited = false;
+        CString st;
+        st.Format("Open Log File Failed[%d][%s]!", (int)errno, strerror(errno));
+        ::MessageBox(st);
+		m_bInited = true;
 		return false;
 	}
 }

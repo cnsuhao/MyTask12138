@@ -433,11 +433,11 @@ public:
 		m_nIsRunAtStartUp = 0;
 		m_nTrayTipType = 0;
 	}
-	~CSetMsg()
-  {
-    if(m_pstMusicNames != NULL)
-      delete [] m_pstMusicNames;
-  }
+    ~CSetMsg()
+    {
+        if(m_pstMusicNames != NULL)
+            delete [] m_pstMusicNames;
+    }
 	bool    SetDefaultFileName(CPCHAR stname);
 	CPCHAR GetDefaultFileName(int type=-1);
 
