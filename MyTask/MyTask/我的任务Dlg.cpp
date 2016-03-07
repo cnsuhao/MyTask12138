@@ -255,6 +255,23 @@ BOOL CMyDlg::OnInitDialog()
 
 	// Add "About..." menu item to system menu.
 
+    CString stPic = CPubData::setMsg.GetBakPic();
+    if (CPubData::setMsg.IsBakPicSet() && !stPic.IsEmpty())
+    {
+        HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(),
+            LPCTSTR(stPic), 
+            IMAGE_BITMAP,
+            0,
+            0,
+            LR_CREATEDIBSECTION|LR_LOADFROMFILE);
+        m_myBitmap.Attach(hbmp);
+    }
+    else
+    {
+        m_myBitmap.LoadBitmap(IDB_BITMAP_BAK);
+    }
+    CPubData::gBr.CreatePatternBrush(&m_myBitmap);
+
 	UpdateData(TRUE);
 	SetWindowText(MAIN_DLG_NAME);
 	CTime ti=CTime::GetCurrentTime();
@@ -452,22 +469,6 @@ BOOL CMyDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 	
 	// TODO: Add extra initialization here
-	CString stPic = CPubData::setMsg.GetBakPic();
-	if (CPubData::setMsg.IsBakPicSet() && !stPic.IsEmpty())
-	{
-		HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(),
-			LPCTSTR(stPic), 
-			IMAGE_BITMAP,
-			0,
-			0,
-			LR_CREATEDIBSECTION|LR_LOADFROMFILE);
-		m_myBitmap.Attach(hbmp);
-	}
-	else
-	{
-		m_myBitmap.LoadBitmap(IDB_BITMAP_BAK);
-	}
-	CPubData::gBr.CreatePatternBrush(&m_myBitmap);
 
 	//m_ctlList.SetBkImage(HBITMAP(m_myBitmap));
 

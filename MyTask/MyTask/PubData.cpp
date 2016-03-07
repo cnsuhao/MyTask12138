@@ -67,7 +67,7 @@ const char* CPubData::gstWeekDayName[]={
     "日","一","二","三","四","五","六"
 };
 
-const int CPubData::gnVersionModifySize = 40;
+const int CPubData::gnVersionModifySize = 41;
 const char * CPubData::gstVersionModifyString[] = {
     "★v1.4 基本功能",
     "    ① ★任务的添加，删除和修改",
@@ -108,7 +108,8 @@ const char * CPubData::gstVersionModifyString[] = {
     "    ⑤ ★天气预报功能，支持多城市配置(计划中)",
     "    ⑥ ★重要日期展示(计划中)",
     "    ⑦ ★CppCheck代码优化(2016-01-18)",
-    "" // 40
+    "    ● ★修改中文路径日志无法保存的问题(2016-02-24)",
+    "" // 41
 };
 
 CPubData::CPubData()
