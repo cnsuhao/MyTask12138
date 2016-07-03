@@ -429,7 +429,6 @@ BOOL CMyDlg::OnInitDialog()
 	m_tnid.hIcon = IconID[m_nIconIndex];
 	::Shell_NotifyIcon(NIM_ADD,&m_tnid);		//ÃÌº”Õ–≈ÃÕº±Í
 
-
 // 	CTime tiTmp = CTime::GetCurrentTime();
 // 	CString stTmp;
 // 	stTmp = GetDateTime(GetDateInt(tiTmp.GetTime())) + "\r\n" + GetDateTime(tiTmp.GetTime());
@@ -1828,7 +1827,7 @@ LRESULT CMyDlg::OnNotifyTray( WPARAM wParam,LPARAM lParam )
 		}
 		break;
 		case NIN_BALLOONUSERCLICK:
-			// MessageBox("Click");
+			MessageBox("Click");
 			break;
 	default:
 		return FALSE;
@@ -2211,7 +2210,7 @@ void CMyDlg::OnTimer(UINT nIDEvent)
 			UpdateData(FALSE);
 			break;
 		case TIMER_TRAY_ICON:
-			//DoRedrawTrayIcon();
+			DoRedrawTrayIcon();
 			break;
 	}
 	CDialog::OnTimer(nIDEvent);
@@ -2352,7 +2351,7 @@ HBRUSH CMyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 bool CMyDlg::DoRemind( TaskMsg& task, int & type, int & mins )
 {
-	//SetTimer(TIMER_TRAY_ICON, 500, NULL);
+	SetTimer(TIMER_TRAY_ICON, 500, NULL);
 	CMsgHandleDlg dlg(task, this);
 	if(dlg.DoModal() == IDOK)
 	{
@@ -2371,8 +2370,8 @@ bool CMyDlg::DoRemind( TaskMsg& task, int & type, int & mins )
 			type = RMD_5_MIN;
 			mins = 5;
 	}
-	//KillTimer(TIMER_TRAY_ICON);
-	//DoRedrawTrayIcon(true);
+	KillTimer(TIMER_TRAY_ICON);
+	DoRedrawTrayIcon(true);
 	return true;
 }
 
