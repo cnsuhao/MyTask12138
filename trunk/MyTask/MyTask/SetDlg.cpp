@@ -167,6 +167,17 @@ void CSetDlg::OnButtonExplorer()
 	{
 		UpdateData();
 		m_stFileName = dlg.GetPathName();
+        CString stCurDir = CPubData::GetCurrentDir();
+        stCurDir.MakeUpper();
+        CString stFileName = m_stFileName;
+        stFileName.MakeUpper();
+
+        // 如果是在当前目录的子目录，则使用相对路径
+        if (stFileName.Find(stCurDir) != -1)
+        {
+            stFileName = "." + m_stFileName.Mid(stCurDir.GetLength());
+            m_stFileName = stFileName;
+        }
 		CPubData::setMsg.SetDefaultFileName(LPCTSTR(m_stFileName));
 		UpdateData(FALSE);
 	}
