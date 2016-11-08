@@ -398,7 +398,13 @@ BOOL CMyDlg::OnInitDialog()
 	}
 	else
 	{
-		if (!DoOpen(CPubData::setMsg.GetDefaultFileName()))
+        m_stCurFileName = CPubData::setMsg.GetDefaultFileName();
+        if (m_stCurFileName[0] == '.')
+        {
+            CString stDir=CPubData::GetCurrentDir();
+            m_stCurFileName.Replace(".\\", stDir+"\\");
+        }
+		if (!DoOpen(m_stCurFileName))
 		{
 			m_stStatus.Format("打开文件[%s]失败！",CPubData::setMsg.GetDefaultFileName());
 			//::MessageBox(m_stStatus,"失败");
@@ -406,7 +412,7 @@ BOOL CMyDlg::OnInitDialog()
 		else
 		{
 			m_stStatus.Format("打开文件[%s]成功！",CPubData::setMsg.GetDefaultFileName());
-			m_stCurFileName = CPubData::setMsg.GetDefaultFileName();
+			//m_stCurFileName = CPubData::setMsg.GetDefaultFileName();
 		}
 	}
 	RebuildDate();
@@ -920,7 +926,13 @@ void CMyDlg::OnButtonToolOpen()
 void CMyDlg::OnButtonToolOpenDefault()
 {
 	UpdateData();
-	if (!DoOpen(CPubData::setMsg.GetDefaultFileName()))
+    m_stCurFileName = CPubData::setMsg.GetDefaultFileName();
+    if (m_stCurFileName[0] == '.')
+    {
+        CString stDir=CPubData::GetCurrentDir();
+        m_stCurFileName.Replace(".\\", stDir+"\\");
+    }
+    if (!DoOpen(m_stCurFileName))
 	{
 		m_stStatus.Format("打开文件[%s]失败！",CPubData::setMsg.GetDefaultFileName());
 		::MessageBox(m_stStatus,"失败", MB_ICONERROR);
@@ -928,7 +940,7 @@ void CMyDlg::OnButtonToolOpenDefault()
 	else
 	{
 		m_stStatus.Format("打开文件[%s]成功！",CPubData::setMsg.GetDefaultFileName());
-		m_stCurFileName = CPubData::setMsg.GetDefaultFileName();
+		//m_stCurFileName = CPubData::setMsg.GetDefaultFileName();
 	}
 	if (IfRebuildTimeShaft(m_nSelectDate) || m_ctlSelectDate.GetCount() == DEFAULT_SELECT_DATE+1)
 		RebuildTimeShaft();
@@ -944,6 +956,12 @@ void CMyDlg::OnButtonToolSave()
 	if (stTmp.IsEmpty())
 	{
 		stTmp = CPubData::setMsg.GetDefaultFileName();
+        if (stTmp[0] == '.')
+        {
+            CString stDir=CPubData::GetCurrentDir();
+            stTmp.Replace(".\\", stDir+"\\");
+        }
+        m_stCurFileName = stTmp;
 	}
 	if (stTmp.IsEmpty())
 	{
@@ -1750,28 +1768,7 @@ void CMyDlg::OnRealExit()
 	// 退出前保存普通任务数据
 	if(m_bIsChanged)
 	{
-		stTmp = m_stCurFileName;
-		if (stTmp.IsEmpty())
-		{
-			stTmp = CPubData::setMsg.GetDefaultFileName();
-		}
-		if (stTmp.IsEmpty())
-		{
-			::MessageBox("没有打开文件！\r\n也没有默认文件！所以不会进行保存！\n请先指定要保存的文件或者在设置中指定默认文件！",
-                "请先选择保存方式", MB_ICONWARNING);
-			return;
-		}
-		else if (!DoSave(stTmp))
-		{
-			m_stStatus.Format("保存文件[%s]失败！", LPCTSTR(stTmp));
-			::MessageBox(m_stStatus,"保存失败", MB_ICONERROR);
-            ADD_ERROR(m_stStatus);
-		}
-		else
-		{
-			m_stStatus.Format("保存文件[%s]成功！", LPCTSTR(stTmp));
-            ADD_NORMAL(m_stStatus);
-		}
+		OnButtonToolSave();
 	}
 
 	// 退出前保存定时任务数据
