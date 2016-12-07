@@ -278,8 +278,16 @@ time_t tagTaskMsg::GetNextTipDay()
             || (_tiNow.GetDay() == tipNext.rt.nDays 
              && !IsBeforeSetMinute(_tiNow)))
         {
-            _tiNext = CTime(_tiNow.GetYear(), (_tiNow.GetMonth()+1)%12, tipNext.rt.nDays,
-                0, 0, 0);
+            if (_tiNow.GetMonth()+1 >= 12)
+            {
+                _tiNext = CTime(_tiNow.GetYear()+1, (_tiNow.GetMonth()+1)%12, tipNext.rt.nDays,
+                    0, 0, 0);
+            }
+            else
+            {
+                _tiNext = CTime(_tiNow.GetYear(), (_tiNow.GetMonth()+1)%12, tipNext.rt.nDays,
+                    0, 0, 0);
+            }
         }
         else
         {
