@@ -16,8 +16,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
+			OutputDirectory="$(PRO_OUT_DIR)\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PRO_INTER_DIR)\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="2"
@@ -49,6 +49,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -56,9 +57,6 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/注册启动项.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
 				BrowseInformation="0"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
@@ -76,7 +74,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile=".\Release/注册启动项.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile=".\Release/注册启动项.pdb"
@@ -112,8 +109,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
+			OutputDirectory="$(PRO_OUT_DIR)\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PRO_INTER_DIR)\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="2"
@@ -144,6 +141,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -151,9 +149,6 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Debug/注册启动项.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
 				BrowseInformation="0"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
@@ -172,7 +167,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile=".\Debug/注册启动项.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
